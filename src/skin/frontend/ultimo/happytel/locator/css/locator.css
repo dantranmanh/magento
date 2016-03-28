@@ -1,0 +1,558 @@
+.page-title {
+    margin-top: 5px;
+    margin-bottom: 11px;
+}
+
+.page-title h1 {
+    letter-spacing: -1.5px;
+}
+
+/* Base style for location map */
+.loc-map {
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.loc-infowindow-loader.is-loading {
+    width: 100%;
+    height: 50px;
+}
+
+/* Base style for location teasers */
+.loc-teaser {
+    -webkit-transition: .5s background ease-in;
+    padding: 11px 0 19px 10px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 15px;
+}
+
+.closest .loc-teaser {
+    margin-bottom: 7px;
+}
+
+.loc-teaser.is-hidden {
+    /* display:none; */
+}
+
+.loc-teaser h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font: 600 17px/19px Raleway, Arial;
+    color: #333333;
+    text-transform: none;
+}
+
+.loc-teaser address {
+    line-height: 20px;
+    margin-bottom: 20px;
+}
+
+.loc-teaser .link-detail {
+    margin-right: 5px;
+}
+
+.loc-teaser .link-directions {
+    margin-left: 5px;
+}
+
+.loc-loadmore {
+    color: #010000;
+    font: 15px/40px GillSansSemiBold, Arial;
+    width: 100%;
+    text-align: center;
+    background: #f7f7f7;
+    display: block;
+    clear: both;
+}
+
+.loc-loadmore:hover {
+    text-decoration: none;
+}
+
+/* Locator search form */
+.loc-srch {
+    margin-bottom: 22px;
+    clear: both;
+    display: block;
+    overflow: hidden;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    line-height: 40px;
+    text-align: center;
+    padding-top: 17px;
+    padding-bottom: 19px;
+    width: 100%;
+}
+
+.loc-srch h4 {
+    margin: 0;
+}
+
+.loc-srch-form {
+    display: inline;
+}
+
+.loc-srch-form .box-select-country, .loc-srch-form .box-search, .box-search-areas, .loc-srch-form .box-radius, .loc-srch-form .button-acts {
+    display: inline-block;
+}
+
+.loc-srch-form .box-search .loc-srch-s {
+    width: 196px;
+}
+
+.box-search-areas .or {
+    margin: auto 20px;
+    text-align: center;
+    width: auto;
+}
+
+.loc-srch-s {
+    width: 200px;
+    padding: 5px;
+}
+
+.loc-srch-dis {
+    width: 40px;
+    padding: 5px;
+}
+
+.loc-srch-form label, .loc-srch-form select, .loc-srch-form span, .loc-srch-form input.input-text, .loc-srch-form button {
+    display: inline-block;
+}
+
+.loc-srch-form label {
+    /*margin-right:20px;*/
+    /*font:600 15px Raleway, Arial;*/
+    color: #333;
+}
+
+.loc-srch-form .selector {
+    /*width: 40%;*/
+    width: 120px !important;
+}
+
+.loc-srch-form select {
+    max-width: 100%;
+}
+
+.loc-srch-form input.input-text {
+    margin: 0;
+    width: 21.6%;
+}
+
+.loc-srch-form button {
+    border: 3px solid #ffdd00;
+    display: inline-block;
+    font: 14px/16px GillSansSemiBold, Arial;
+    padding: 9px 22px;
+    text-transform: uppercase;
+    background: #ffdd00;
+    color: #000000;
+    width: 110px;
+    height: 41px;
+    margin: 0 0 0 8px;
+    cursor: pointer;
+}
+
+.loc-srch-form button:hover {
+    background: #ffec70;
+}
+
+.loc-srch-form button.is-loading {
+    text-indent: -9999px;
+    background: url(../images/loader/loader-med.gif) no-repeat center center;
+    color: transparent;
+    pointer-events: none;
+}
+
+.loc-srch-form .loader-med {
+    display: none;
+    margin: auto;
+}
+
+.loc-srch-form .span-and {
+    margin: 0 12px;
+}
+
+.loc-srch-form .validation-advice {
+    display: none;
+}
+
+.loc-srch-form input.input-text.validation-failed:focus, input.validation-failed[type="text"]:focus {
+    border-color: #ee1414 !important;
+}
+
+.loc-srch-form .validation-failed {
+    border-color: #ee1414 !important;
+}
+
+.loc-srch .my-location {
+    background: url(../images/my-location.png) 0 0 no-repeat #0081c6;
+    color: #FFF;
+    text-transform: uppercase;
+    font: 14px/41px GillSansSemiBold, Arial;
+    padding: 0 15px 0 45px;
+    display: inline-block;
+    margin-left: 12px;
+    letter-spacing: 0.5px;
+}
+
+.loc-srch .my-location:hover {
+    text-decoration: none;
+}
+
+/* Locator search results */
+.loc-srch-res {
+
+}
+
+/* hide no results page by default */
+.loc-srch-res-noresults {
+    display: none;
+}
+
+/* when no results are shown show no results and hide search; */
+.loc-srch-res.is-no-results .loc-srch-res-list, .loc-srch-res.is-no-results .loc-srch-res-map {
+    display: none;
+}
+
+.loc-srch-res.is-no-results .loc-srch-res-noresults {
+    display: block;
+}
+
+/* Map */
+.loc-srch-res-map-wrap {
+    border: #e5e5e5 1px solid;
+    padding: 0;
+    float: right !important;
+    height: 686px;
+    width: 66%;
+    margin-top: 40px;
+}
+
+.loc-srch-res-map-wrap.is-fixed {
+    position: fixed;
+    top: 0;
+    margin-left: 34%;
+}
+
+.loc-srch-res-map {
+    width: 100%;
+    height: 686px;
+}
+
+.wrap-loc-list {
+    float: left;
+    margin-bottom: 20px;
+    width: 31%;
+}
+
+/* Teaser List */
+.loc-srch-res-list {
+    float: left;
+    width: 100%;
+    padding: 12px 0 5px 0;
+}
+
+.loc-srch-res-list .button {
+    height: 55px;
+    background: #fd0;
+    color: #000;
+    border: 3px solid #fd0;
+    font: 14px/16px 'GillSansSemiBold', Arial;
+    padding: 9px 22px;
+    text-transform: uppercase;
+}
+
+.loc-srch-res-list .button:hover {
+    background: #ffec70;
+}
+
+.loc-srch-res-list .button.is-loading {
+    text-indent: -9999px;
+    background: url(../images/loader/loader-med.gif) no-repeat center center;
+    color: transparent;
+    pointer-events: none;
+}
+
+.loc-srch-res-list h2 {
+    font: 14px/25px ufonts_com_gillsans, Arial;
+    color: #0081c6;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 3px;
+}
+
+/* Individual Location Page */
+.loc-page {
+    float: left;
+    width: 100%;
+    clear: both;
+    margin-bottom: 20px;
+}
+
+.loc-page-search {
+    margin-bottom: 34px;
+}
+
+.loc-page-data {
+    float: left;
+    margin-bottom: 20px;
+    width: 31%;
+}
+
+.loc-page-data h2 {
+    border-bottom: 1px solid #e5e5e5;
+    color: #0081c6;
+    font: 14px/25px ufonts_com_gillsans, Arial;
+    padding-bottom: 3px;
+}
+
+.loc-page-data h3 {
+    color: #333333;
+    font: 600 17px/19px Raleway, Arial;
+    margin-bottom: 8px;
+    margin-top: 0;
+    text-transform: none
+}
+
+.loc-page-data .address {
+    margin: 22px 0 23px 0;
+}
+
+.loc-page-data .address address {
+    line-height: 21px;
+}
+
+.loc-page-data .image {
+    margin: 25px 0 0 0;
+}
+
+.loc-page-data .opening {
+    margin: 23px 0 27px 0;
+    clear: both;
+    display: block;
+    overflow: hidden;
+}
+
+.opening ul li {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    margin-bottom: -2px;
+}
+
+.opening ul p.hour-left {
+    float: left;
+    margin-bottom: 0;
+    margin-right: 10px;
+    width: 27.5%;
+}
+
+.opening ul p.hour-right {
+    float: left;
+    margin-bottom: 0;
+}
+
+.description .description-content {
+    line-height: 19px;
+    max-width: 350px;
+}
+
+.loc-page-map-wrap {
+    border: 1px solid #e5e5e5;
+    float: right !important;
+    height: 686px;
+    margin-top: 28px;
+    padding: 0;
+    width: 66%;
+}
+
+.loc-page-map {
+    height: 686px;
+    width: 100%;
+}
+
+/* Nearby Locations */
+.loc-nearby {
+    float: left;
+    margin-top: 20px;
+}
+
+.loc-nearby-item {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    width: 207px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.loc-nearby-item .loc-teaser {
+    padding-right: 20px;
+}
+
+.loc-nearby-item:nth-child(4n) {
+    margin-right: 0;
+}
+
+/* Loader styles */
+.loader {
+    display: none;
+    width: 24px;
+    height: 24px;
+    text-indent: -9999px;
+}
+
+.loader.is-loading {
+    display: inline-block;
+    background: url(../images/loader/loader-med.gif) center no-repeat;
+}
+
+.loader-tiny {
+    width: 10px;
+    height: 10px;
+}
+
+.loader-tiny.is-loading {
+    background-image: url(../images/loader/loader-tiny.gif);
+}
+
+.loader-sml {
+    width: 16px;
+    height: 16px;
+}
+
+.loader-sml.is-loading {
+    background-image: url(../images/loader/loader-sml.gif);
+}
+
+.loader-lrg {
+    width: 48px;
+    height: 48px;
+}
+
+.loader-lrg.is-loading {
+    background-image: url(../images/loader/loader-lrg.gif);
+}
+
+@media only screen and (min-width: 1280px) {
+    .locator-location-index .col-main {
+        min-height: 1036px;
+    }
+
+    .locator-search-index .col-main {
+        min-height: 1182px;
+    }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+    .loc-srch-form .span-and {
+        margin: 0 5px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    .opening ul p.hour-left {
+        width: 48%;
+    }
+
+    .loc-srch {
+        text-align: left;
+    }
+
+    /*.loc-srch-form .selector {
+        width: 25%;
+    }*/
+    .loc-srch-form .span-and {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    /*.loc-srch-form .selector {
+        width: 36%;
+    }*/
+}
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    .loc-srch-form select {
+        max-width: 160px;
+    }
+
+    .loc-srch-form .span-and {
+        margin: 0 5px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    .loc-srch {
+        text-align: center;
+    }
+
+    .loc-srch-form label {
+        /*width: 100%;*/
+        margin: 0 auto;
+    }
+
+    .loc-srch-form select, .loc-srch-form input.input-text {
+        margin: 10px 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .loc-srch-form button {
+        margin: 0;
+        width: 100%;
+    }
+
+    .loc-srch-form .span-and {
+        display: none;
+    }
+
+    .loc-srch-form .selector {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 639px) {
+    .loc-srch {
+        margin-bottom: 0;
+    }
+
+    .loc-srch-form button, .loc-srch .my-location {
+        width: 100%;
+        max-width: 100%;
+        margin: 5px 0;
+    }
+
+    .loc-srch .my-location {
+        box-sizing: border-box;
+    }
+
+    .wrap-loc-list, .loc-srch-res-map-wrap, .loc-page-data, .loc-page-map-wrap {
+        width: 100%;
+    }
+
+    .loc-srch-res-map-wrap, .loc-page-map-wrap {
+        margin-top: 0;
+        height: 400px;
+    }
+
+    .loc-srch-res-map, .loc-page-map {
+        height: 400px;
+    }
+
+    .loc-page-search {
+        margin-bottom: 10px;
+    }
+
+    .loc-srch-res-list {
+        padding-top: 8px;
+    }
+
+    .description .description-content {
+        max-width: 100%;
+    }
+}

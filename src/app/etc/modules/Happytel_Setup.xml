@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happytel_Setup>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Happytel_Setup>
+    </modules>
+</config>

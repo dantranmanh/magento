@@ -1,0 +1,116 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+?>
+<?php
+// Intergation Conversion Tracking code
+$westfieldCampaignID = Mage::getStoreConfig('conversiontracking/conversiontracking_group/conversiontracking_input',Mage::app()->getStore());;
+$westfieldItemArray = "";
+// Retrieve order
+$thisOrderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+$order = Mage::getModel('sales/order');
+$order->loadByIncrementId($thisOrderId);
+// Iterate cart items
+$items = $order->getItemsCollection();
+foreach ($items as $item) {
+    // Determine item price, minus any discounts
+    $itemPrice = number_format($item->getPriceInclTax() - $item->getDiscountAmount(), 2, '.', '');
+    // Check for valid price
+    if ($itemPrice != 0.00) {
+        // Retrieve product
+        $productId = $item->getProductId();
+        $product = Mage::getModel('catalog/product')->load($productId);
+        // Get first category for product
+        $itemCategory = "";
+        foreach ($product->getCategoryIds() as $category_id) {
+            $_cat = Mage::getModel('catalog/category')->load($category_id);
+            $itemCategory = $_cat->getName();
+            if ($itemCategory != "") break; // Break after first valid category
+        }
+        // Validation
+        $filters = array('/', '[', ']', ':', ' ');
+        $itemCategory = ($itemCategory == "" ? "SALE" : str_replace($filters, '', $itemCategory));
+        $sku = str_replace($filters, '', $item->getSku());
+        // Append item code
+        $westfieldItemArray .= "[category:" . $itemCategory . "/sku:" . $sku . "/value:" . $itemPrice . "/quantity:" . $item->getQtyOrdered() . "]";
+    }
+}
+// Build pixel string
+$westfieldPixelString = '<img src="//prf.hn/conversion/campaign:' . $westfieldCampaignID . '/conversionref:' . $this->escapeHtml($thisOrderId) . '/currency:' . Mage::app()->getStore()->getCurrentCurrencyCode() . '/' . $this->escapeHtml($westfieldItemArray) . '" height="1" width="2" />';
+?><!-- Westfield Pixel start -->
+<?php echo $westfieldPixelString ?>
+<!-- Westfield Pixel end -->
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<p><strong><?php echo $this->__('Thank you for your purchase!') ?></strong></p>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s" style="color:#333333">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?>
+    <br/>
+	<?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here</a> to print a copy of your order confirmation.', $this->getPrintUrl()) ?>
+	<?php echo $this->getChildHtml() ?>
+</p>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Continue Shopping')) ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+
+<div class="featured-product-list-emptyCart">
+	 <?php echo $this->getChildHtml('product_list'); ?>
+</div>
+<?php
+//Provides a block where additional page components may be attached, primarily good for in-page JavaScript
+if ($this->getChild('after')) {
+    $_afterChildren = $this->getChild('after')->getSortedChildren();
+    foreach ($_afterChildren as $_afterChildName) {
+        $_afterChild = $this->getChild('after')->getChild($_afterChildName);
+        //set product collection on after blocks
+        $_afterChild->setProductCollection($_productCollection);
+        echo $_afterChild->toHtml();
+    }
+}
+?>

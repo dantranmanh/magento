@@ -1,0 +1,14 @@
+<?php
+$_product = $this->getProduct();
+if ($_product->getTypeId() == 'giftvoucher' && $this->contentCondition()) :
+?>
+<a id='giftvoucher-view-condition' href="javascript:void()"><?php echo $this->__('View usage conditions of this Gift Card') ?></a>
+
+<div id='giftvoucher-tooltip' style="display:none; margin: 5px; background-color: #FFFFFF; border: 1px solid rgb(199, 203, 204); padding: 10px; width: 300px; z-index: 1000; box-shadow: 2px 4px 17px rgb(179, 184, 183); border-radius: 7px;">
+    <?php echo $this->contentCondition() ?>
+ </div>
+
+<script type="text/javascript">
+  var my_tooltip = new Tooltip('giftvoucher-view-condition', 'giftvoucher-tooltip')
+</script>
+<?php endif; ?>

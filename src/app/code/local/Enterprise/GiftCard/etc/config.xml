@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <global>
+        <models>
+            <enterprise_giftcard>
+                <class>Enterprise_GiftCard_Model</class>
+                <resourceModel>enterprise_giftcard_resource</resourceModel>
+            </enterprise_giftcard>
+            <enterprise_giftcard_resource>
+                <class>Enterprise_GiftCard_Model_Resource</class>
+                <deprecatedNode>enterprise_giftcard_mysql4</deprecatedNode>
+                <entities>
+                    <amount>
+                        <table>enterprise_giftcard_amount</table>
+                    </amount>
+                </entities>
+            </enterprise_giftcard_resource>
+        </models>
+		<helpers>
+            <enterprise_giftcard>
+                <class>Enterprise_GiftCard_Helper</class>
+            </enterprise_giftcard>
+        </helpers>
+    </global>
+</config>

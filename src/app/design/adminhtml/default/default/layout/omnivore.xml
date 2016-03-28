@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_omnivore_index>
+        <reference name="content">
+            <block type="core/template" name="omnivore" template="omnivore/omnivore.phtml" />
+        </reference>
+    </adminhtml_omnivore_index>
+</layout>

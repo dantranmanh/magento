@@ -1,0 +1,15 @@
+<?php $categs = explode(",", $this->getData('categs'));?>
+
+<?php if(count($categs)>0): ?>
+	<div class="categs">
+		<ul>
+		<?php foreach($categs as $categId): ?>
+			<?php $_category = Mage::getModel('catalog/category')->load($categId); ?>
+			<li><a href="<?php echo $_category->getUrl(); ?>"><span><?php echo $_category->getName(); ?></span></a></li>
+		<?php endforeach; ?>
+		<ul>
+	</div>
+<?php endif; ?>
+<div class="placeholder-images">
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('block_placeholder_image')->toHtml();?>
+</div>

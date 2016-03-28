@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happytel_AutomaticInvoice>
+            <version>0.1.0</version>
+        </Happytel_AutomaticInvoice>
+    </modules>
+    <global>
+        <models>
+            <happytel_automaticinvoice>
+                <class>Happytel_AutomaticInvoice_Model</class>
+            </happytel_automaticinvoice>
+        </models>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <sales_order_place_after_handler>
+                        <type>singleton</type>
+                        <class>Happytel_AutomaticInvoice_Model_Order_Observer</class>
+                        <method>sendOrderConfirmationEmail</method>
+                    </sales_order_place_after_handler>
+                </observers>
+            </sales_order_place_after>
+            <sales_order_invoice_save_after>
+                <observers>
+                    <sales_order_invoice_pay_handler>
+                        <type>singleton</type>
+                        <class>happytel_automaticinvoice/observer</class>
+                        <method>automaticSendInvoiceEmail</method>
+                    </sales_order_invoice_pay_handler>
+                </observers>
+            </sales_order_invoice_save_after>
+        </events>
+    </global>
+</config>

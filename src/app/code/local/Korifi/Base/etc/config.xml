@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Korifi_Base>
+            <version>1.0.0</version>
+        </Korifi_Base>
+    </modules>
+
+    <global>
+        <blocks>
+            <kbase>
+                <class>Korifi_Base_Block</class>
+            </kbase>
+        </blocks>
+        <resources>
+            <kbase_setup>
+                <setup>
+                    <module>Korifi_Base</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </kbase_setup>
+            <kbase_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </kbase_write>
+            <kbase_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </kbase_read>
+        </resources>
+        <models>
+            <kbase>
+                <class>Korifi_Base_Model</class>
+            </kbase>
+        </models>
+        <helpers>
+            <kbase>
+                <class>Korifi_Base_Helper</class>
+            </kbase>
+        </helpers>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Korifi_Base after="Mage_Adminhtml">Korifi_Base_Adminhtml</Korifi_Base>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <kbase translate="title">
+                                            <title>JET - Extensions Information</title>
+                                        </kbase>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <kbase_upds>
+                        <type>singleton</type>
+                        <class>kbase/feed</class>
+                        <method>check</method>
+                    </kbase_upds>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </adminhtml>
+
+    <default>
+        <kbase>
+            <feed>
+                <check_frequency>86400</check_frequency>
+                <update>1</update>
+                <promo>1</promo>
+            </feed>
+        </kbase>
+    </default>
+</config>

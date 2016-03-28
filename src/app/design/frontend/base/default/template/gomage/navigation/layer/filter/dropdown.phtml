@@ -1,0 +1,35 @@
+<?php
+ /**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2015 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 4.9
+ * @since        Class available since Release 2.0
+ */
+?>
+<?php 
+$stock = ($this->getFilter()->getRequestVarValue() == 'stock_status') ? true : false;
+?>
+<select <?php if($this->ajaxEnabled()):?>onchange="GomageNavigation.setNavigationUrl( this.value ? this.value : '<?php echo $this->getRemoveUrl(true);?>')"<?php else:?>onchange="setLocation( this.value ? GomageNavigation.decode(this.value) : '<?php echo $this->getParentBlock()->getClearUrl(false);?>')"<?php endif;?>>
+	<option value=""><?php echo $this->__('Please Select')?></option>
+<?php foreach ($this->getItems() as $_item): ?>
+	<?php if ( !$_item->getActive() 
+				  ||
+			   (Mage::getStoreConfig('gomage_navigation/filter_settings/applied_values') != GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Appliedvalues::REMOVE
+				    &&
+				$_item->getActive())): ?>
+    <option value="<?php echo $_item->getUrl($this->ajaxEnabled(), $stock); ?>" <?php if($_item->getActive()):?> selected="selected" <?php endif;?>>
+        <?php echo $_item->getLabel() ?>
+    	<?php if(!$_item->getActive()):?>
+    		<?php if ( Mage::getStoreConfigFlag('gomage_navigation/filter_settings/values_qty') == 1 ):?>
+        		(<?php echo $_item->getCount() ?>)
+        	<?php endif;?>
+        <?php endif;?>
+    </option>
+    <?php endif;?>
+<?php endforeach ?>
+</select>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happytel_Contacts>
+            <version>0.1.0</version>
+        </Happytel_Contacts>
+    </modules>
+    <global>
+        <helpers>
+            <happytel_contacts>
+                <class>Happytel_Contacts_Helper</class>
+            </happytel_contacts>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <contacts>
+                <args>
+                    <modules>
+                        <happytel_contacts before="Mage_Contacts">Happytel_Contacts</happytel_contacts>
+                    </modules>
+                </args>
+            </contacts>
+        </routers>
+    </frontend>
+    <default>
+        <contacts>
+            <email>
+                <be_recipient_email><![CDATA[sales-list@happytel.com]]></be_recipient_email>
+                <cse_recipient_email><![CDATA[customer-care-list@happytel.com]]></cse_recipient_email>
+            </email>
+        </contacts>
+    </default>
+</config>

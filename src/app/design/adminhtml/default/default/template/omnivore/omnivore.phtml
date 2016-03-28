@@ -1,0 +1,58 @@
+<?php
+
+$OMNIVORE_URL = 'http://m1.omnivore.com.au';
+//$OMNIVORE_URL = 'http://localhost:8080';
+
+$url = Mage::helper("adminhtml")->getUrl("adminhtml/index/index");
+
+$admin = Mage::getSingleton('admin/session')->getUser();
+$adminEmail = $admin->getEmail();
+
+error_log("Admin email = {$adminEmail}");
+
+$email = null;
+$key = null;
+$rego = null;
+
+$regos = Mage::getModel('citybeach_omnivore/rego')->getCollection()
+    ->addFieldToFilter('status', 'installed')
+    ->addFieldToFilter('email', array('null' => true));
+
+if ($regos->count() > 0 && isset($adminEmail))
+{
+    $rego = $regos->getFirstItem()
+        ->setEmail($adminEmail)
+        ->setStatus('assigned')
+        ->save();
+
+    error_log("Omnivore login assigned to {$adminEmail}");
+}
+else
+{
+    $rego = Mage::getModel('citybeach_omnivore/rego')->getCollection()
+        ->addFieldToFilter('status', 'assigned')
+        ->getFirstItem();
+    error_log("Using rego id = {$rego->getId()}, email = {$rego->getEmail()}");
+}
+
+$key = $rego->getKey();
+$email = $rego->getEmail();
+
+?>
+
+
+
+<h3>Access Omnivore</h3>
+
+<p>
+    Click the button to access Omnivore:
+</p>
+<form action="<?php echo $OMNIVORE_URL; ?>/magento/rego" method="post" target="_blank">
+
+    <input type="hidden" name="url" value="<?php echo $url; ?>" />
+    <input type="hidden" name="key" value="<?php echo $key; ?>" />
+    <input type="hidden" name="email" value="<?php echo $email; ?>" />
+
+    <button>Go To Omnivore</button>
+
+</form>

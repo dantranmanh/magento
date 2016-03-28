@@ -1,0 +1,81 @@
+<layout version="0.1.0">
+    <default>
+
+        <reference name="head">
+            <action method="addJs"><script>locator/locator.min.js</script></action>
+            <action method="addCss"><script>locator/css/locator.css</script></action>
+        </reference>
+
+        <!--
+        example of how to add a store locator to your layout, do this in local.xml, not here.
+        <reference name="left">
+            <block type="ak_locator/search_quicksearch" name="search_quicksearch" as="search_quicksearch" />
+        </reference>
+        -->
+
+    </default>
+
+    <locator_index_index>
+
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="ak_locator/search_form" name="form" as="form" template="locator/search/form-simple.phtml" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" template="locator/search/no-results.phtml" />
+            </block>
+        </reference>
+
+    </locator_index_index>
+
+    <locator_search_index>
+
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="head">
+            <block type="core/template" name="init-locator" as="init-locator" template="locator/page/html/head/init-locator.phtml" />
+            <block type="ak_locator/search_init" name="init-search" as="init-search" template="locator/page/html/head/init-search.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="ak_locator/search" name="search" as="search" template="locator/search/search.phtml">
+                <block type="ak_locator/search_form" name="form" as="form" template="locator/search/form-australia.phtml" />
+                <block type="ak_locator/search_noresults" name="empty" as="empty" template="locator/search/no-results.phtml" />
+            </block>
+        </reference>
+
+    </locator_search_index>
+
+    <locator_search_infowindow>
+        <block type="ak_locator/search_infowindow" name="root" template="locator/search/infowindow.phtml"/>
+    </locator_search_infowindow>
+
+    <locator_search_infowindows>
+        <block type="ak_locator/search_infowindows" name="root">
+            <block type="ak_locator/search_infowindow" name="infowindow" template="locator/search/infowindow.phtml"/>
+        </block>
+    </locator_search_infowindows>
+
+    <locator_location_index>
+
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="ak_locator/location_view" name="view" as="view"></block>
+        </reference>
+
+    </locator_location_index>
+
+</layout>

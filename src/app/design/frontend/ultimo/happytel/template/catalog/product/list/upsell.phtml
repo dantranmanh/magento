@@ -1,0 +1,259 @@
+<?php
+/**
+ * Up-sell products slider
+ */
+?>
+<?php
+$object = Mage::getModel('catalog/product');
+$prd = Mage::registry('product');
+$_product = $object->load($prd->getEntityId());
+$upsell_product = $_product->getUpSellProductCollection()->addAttributeToSort('position', Varien_Db_Select::SQL_ASC)->addStoreFilter();
+?>
+<?php
+    $_collectionSize = count($upsell_product);
+?>
+<?php if($_collectionSize): ?>
+<?php
+    $theme = $this->helper('ultimo');
+    $helpImg = $this->helper('infortis/image');
+    $helpTemplate = $this->helper('ultimo/template');
+    $sliderClasses = '';
+    $gridClasses = '';
+
+    $sliderId = "itemslider-upsell";
+
+    //Slider parameters
+    //--------------------------------------------------------------
+
+    //Responsive mode on/off
+    $isResponsive = true;
+
+    //Assign number of items in a row to specific viewport width
+    $breakpoints = $theme->getCfg('product_page/upsell_breakpoints');
+    if (empty($breakpoints)) //Param not set
+    {
+        $breakpoints = '[0, 1], [320, 2], [480, 3], [960, 4], [1280, 5]'; //Set default breakpoints
+    }
+
+    //Pagination on/off
+    $pagination = false;
+
+    //Default image size
+    $imgWidth = 255;
+    $imgHeight = 196;
+
+        //Image aspect ratio
+        if ($theme->getCfg('category/aspect_ratio'))
+        {
+            $imgHeight = 0; //Height will be computed automatically (based on width) to keep the aspect ratio
+        }
+
+    //Slider timeout. Set to enable automatic scrolling.
+    $timeout = intval($theme->getCfg('product_page/upsell_timeout'));
+
+    //Number of items that should move on scrolling
+    $move = 0;
+
+    //If set, slider will loop
+    $loop = $theme->getCfg('product_slider/loop');
+
+    //Speed (arrows / touch swipe)
+    $speed = intval($theme->getCfg('product_slider/speed'));
+
+    //Speed (automatic scrolling / pagination)
+    $autoSpeed = intval($theme->getCfg('product_slider/auto_speed'));
+
+    //Pause slider on mouse hover
+    $pause = $theme->getCfg('product_slider/pause');
+
+    //Lazy loading
+    $lazy = $theme->getCfg('product_slider/lazy');
+
+    //Slider classes
+    //--------------------------------------------------------------
+    if($isResponsive)
+    {
+        $sliderClasses .= ' itemslider-responsive';
+    }
+
+    if ($_collectionSize == 1)
+    {
+        $sliderClasses .= ' single-item';
+    }
+
+    //Product grid classes
+    //--------------------------------------------------------------
+
+    //Align elements to the center
+    if ($theme->getCfg('category_grid/centered'))
+    {
+        $gridClasses .= ' centered';
+    }
+?>
+<div class="block block-upsell">
+    <h3 class="section-title padding-right"><?php echo $this->__('You may also be interested in...'); ?></h3>
+    <div class="itemslider-wrapper itemslider-upsell-wrapper slider-arrows1 slider-arrows1-pos-top-right slider-pagination1">
+        <div id="<?php echo $sliderId; ?>" class="itemslider <?php if($sliderClasses) echo $sliderClasses; ?> products-grid<?php if($gridClasses) echo $gridClasses; ?>">
+        <?php $this->resetItemsIterator() ?>
+        <?php foreach($upsell_product as $_product): //$_link replaced with $_product ?>
+			<?php $_product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
+            <div class="item">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->escapeHtml($_product->getName()) ?>" class="product-image">
+
+                    <?php if ($lazy): ?>
+                        <img class="lazyOwl" data-src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->escapeHtml($_product->getName()) ?>" />
+                    <?php else: ?>
+                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->escapeHtml($_product->getName()) ?>" />
+                    <?php endif; ?>
+
+					<?php //Add-to links
+						if ($theme->getCfg('category_grid/display_addtolinks') != 0
+							&& $theme->getCfg('category_grid/addtolinks_simple'))
+						{
+							if ($theme->getCfg('category_grid/display_addtolinks') == 1) //Display on hover
+							{
+								echo $helpTemplate->getCategoryAddtoLinksIcons(
+								$_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage visible-onhover');
+							}
+							else //Always display
+							{
+								echo $helpTemplate->getCategoryAddtoLinksIcons(
+								$_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
+							}
+						}
+					?>
+
+                </a>
+                <h3 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->escapeHtml($_product->getName()) ?>"><?php echo $this->escapeHtml($_product->getName()) ?></a></h3>
+                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+
+				<?php  //check if product is a configurable type or not ?>
+				<?php if (Mage::helper('configurableswatches')->isEnabled() && $_product && $_product->getId() && ($_attrValues = $_product->getListSwatchAttrValues()) && count($_attrValues) > 0): ?>
+					<?php
+						$_swatchAttribute = Mage::helper('configurableswatches/productlist')->getSwatchAttribute();
+
+						$_dimHelper = Mage::helper('configurableswatches/swatchdimensions');
+						$_swatchInnerWidth = $_dimHelper->getInnerWidth(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LISTING);
+						$_swatchInnerHeight = $_dimHelper->getInnerHeight(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LISTING);
+						$_swatchOuterWidth = $_dimHelper->getOuterWidth(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LISTING);
+						$_swatchOuterHeight = $_dimHelper->getOuterHeight(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LISTING);
+					?>
+					<ul class="configurable-swatch-list configurable-swatch-<?php echo $_swatchAttribute->getAttributeCode() ?> clearfix">
+						<?php foreach ($_attrValues as $_optionValue => $_optionLabel): ?>
+							<?php
+							$_optionCode = Mage::helper('configurableswatches')->getHyphenatedString($_optionLabel);
+							$_swatchUrl = Mage::helper('configurableswatches/productimg')->getSwatchUrl($_product, $_optionLabel, $_swatchInnerWidth, $_swatchInnerHeight, $_swatchType);
+							//print_r($_swatchUrl);
+							$_hasImage = !empty($_swatchUrl);
+							$_liClasses = array();
+							$_aClass = 'swatch-link swatch-link-' . $_swatchAttribute->getId();
+							if ($_hasImage) {
+								if ($_swatchType == 'media') {
+									$_liClasses[] = 'is-media';
+								}
+								$_aClass .= ' has-image';
+							} elseif (strlen($_optionLabel) > 3) {
+								$_liClasses[] = 'wide-swatch';
+							}
+							if (Mage::helper('configurableswatches/productlist')->swatchMatchesFilter($_optionValue)) {
+								$_liClasses[] = 'filter-match';
+							}
+							$_liClass = (!empty($_liClasses)) ? ' ' . implode(' ', $_liClasses) : '';
+							?>
+						<li class="option-<?php echo $_optionCode; ?><?php echo $_liClass; ?>" data-product-id="<?php echo $_product->getId() ?>" data-option-label="<?php echo $_optionLabel ?>">
+							<a href="javascript:void(0)" name="<?php echo $_optionCode; ?>" class="<?php echo $_aClass ?>" title="<?php echo $_optionLabel; ?>"
+								   style="height: <?php echo $_swatchOuterHeight ?>px; <?php if (!$_hasImage): ?>min-<?php endif; ?>width: <?php echo $_swatchOuterWidth ?>px;">
+								<span class="swatch-label" style="height: <?php echo $_swatchInnerHeight ?>px; <?php if (!$_hasImage): ?>min-<?php endif; ?>width: <?php echo $_swatchInnerWidth ?>px; line-height: <?php echo $_swatchInnerHeight ?>px;">
+								<?php if ($_hasImage): ?>
+									<img src="<?php echo $_swatchUrl; ?>" alt="<?php echo $_optionLabel; ?>" width="<?php echo $_swatchInnerWidth ?>" height="<?php echo $_swatchInnerHeight ?>" />
+								<?php else: ?>
+									<?php echo $_optionLabel; ?>
+								<?php endif; ?>
+								 </span>
+							</a>
+						</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+
+                <?php echo $this->getPriceHtml($_product, true, '-upsell') ?>
+            </div>
+        <?php endforeach; ?>
+        </div> <!-- end: itemslider -->
+    </div> <!-- end: itemslider-wrapper -->
+    <script type="text/javascript">
+    //<![CDATA[
+        jQuery(function($) {
+
+            var owl = $('#<?php echo $sliderId; ?>');
+            owl.owlCarousel({
+
+            <?php if ($lazy): ?>
+                lazyLoad: true,
+            <?php endif; ?>
+
+            <?php if(!$isResponsive): ?>
+                responsive: false,
+                items: <?php echo $showItems; ?>,
+            <?php else: ?>
+                itemsCustom: [ <?php echo $breakpoints; ?> ],
+                responsiveRefreshRate: 50,
+            <?php endif; ?>
+
+            <?php if ($speed): ?>
+                slideSpeed: <?php echo $speed; ?>,
+            <?php endif; ?>
+
+            <?php if ($autoSpeed): ?>
+                paginationSpeed: <?php echo $autoSpeed; ?>,
+            <?php endif; ?>
+
+            <?php if ($move !== 1): ?>
+                scrollPerPage: true,
+            <?php endif; ?>
+
+            <?php if ($timeout): ?>
+                autoPlay: <?php echo $timeout; ?>,
+            <?php endif; ?>
+
+            <?php if ($pause): ?>
+                stopOnHover: true,
+            <?php endif; ?>
+
+            <?php if ($loop): ?>
+                rewindNav: true,
+                rewindSpeed: 600,
+            <?php else: ?>
+                rewindNav: false,
+            <?php endif; ?>
+
+            <?php if ($pagination): ?>
+                pagination: true,
+            <?php else: ?>
+                pagination: false,
+            <?php endif; ?>
+
+                navigation: true,
+                navigationText: false
+
+            }); //end: owl
+
+        });
+    //]]>
+    </script>
+
+	<?php
+//Provides a block where additional page components may be attached, primarily good for in-page JavaScript
+if ($this->getChild('after')) {
+    $_afterChildren = $this->getChild('after')->getSortedChildren();
+    foreach ($_afterChildren as $_afterChildName) {
+        $_afterChild = $this->getChild('after')->getChild($_afterChildName);
+        //set product collection on after blocks
+        $_afterChild->setProductCollection($this->getItemCollection()->getItems());
+        echo $_afterChild->toHtml();
+    }
+}
+?>
+
+</div> <!-- end: block -->
+<?php endif; ?>

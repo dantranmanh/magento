@@ -1,0 +1,193 @@
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=<?php echo Mage::getStoreConfig('locator_settings/google_maps/api_key'); ?>&amp;sensor=false&amp;m5xzts"></script>
+
+<div id="edit_map" style="position: absolute; top: 10px; left: 580px; width: 300px; height: 300px;"></div>
+
+<script>
+
+    var geocoder = new google.maps.Geocoder();
+    var markers = Array();
+    addressTab = $$('#location_info_tabs_location_address_content .fieldset');
+
+    document.observe("dom:loaded", function() {
+        mapCont =$('edit_map');
+
+        //temporarily move map into fieldset until I can figure out how to do it with templates
+        addressTab[0].insert(mapCont).setStyle({position: 'relative'});
+
+        map = new Locator.Map(mapCont);
+        //map = new google.maps.Map(mapCont, Locator.settings.defaultMapOptions);
+
+
+        initGeoSearch();
+
+        latField = $('latitude');
+        longField = $('longitude');
+
+        latVal = latField.getValue();
+        lngVal = longField.getValue();
+
+
+        if(latVal!=''&&lngVal!=''){
+            latlng = new google.maps.LatLng(latVal,lngVal);
+
+            map.clearOverlays();
+            addMarker(latlng);
+        }
+
+        $('geocode').observe('click', geoCodeAddress);
+
+        setInterval(function(){
+            google.maps.event.trigger(map.map, 'resize');
+        }, 2000);
+
+    });
+
+
+    initGeoSearch = function(){
+        var addressSearch = '<form><input type="text" id="search" style="width:364px; margin: 10px 0 10px 5px;" /><button id="geocode">Geocode Address</button></form>';
+        new Insertion.Top(addressTab[0], addressSearch)
+    }
+
+
+    geoCodeAddress = function(event){
+
+        event.stop();
+
+        address = $('search').getValue();
+
+        if('' == address){
+            alert('please enter an address to geocode');
+            return;
+        }
+
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                result = results[0];
+
+                // if(result.geometry.location_type == 'APPROXIMATE'){
+                //   return;
+                // }
+
+                setAddress(result);
+
+
+                map.clearOverlays();
+                addMarker(result.geometry.location);
+
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+
+        });
+    }
+
+    addMarker = function(latlng){
+        latlngbounds = new google.maps.LatLngBounds( );
+
+        map.markers[0] = new google.maps.Marker({
+            position: latlng,
+            map: map.map,
+            draggable:true,
+            //icon: map.getMarkerImage(l),
+            animation: google.maps.Animation.DROP
+        });
+
+        google.maps.event.addListener(map.markers[0], 'dragend', function()
+        {
+            geocodePosition(map.markers[0].getPosition());
+        });
+
+        latlngbounds.extend( latlng );
+
+        map.checkMaxZoom();
+        map.map.fitBounds( latlngbounds );
+
+    }
+
+    function geocodePosition(pos)
+    {
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode
+        ({
+                latLng: pos
+            },
+            function(results, status)
+            {
+                if (status == google.maps.GeocoderStatus.OK)
+                {
+                    setAddress(results[0]);
+                }
+                else
+                {
+                    alert('could not geocode position. '+status);
+                }
+            }
+        );
+    }
+
+
+    function setAddress(result){
+
+
+        $$('.form-list input').each(function(el){
+            el.setValue('');
+        });
+
+        latField.setValue(result.geometry.location.lat());
+        longField.setValue(result.geometry.location.lng());
+
+        $('address').setValue(result.formatted_address);
+
+        components = result.address_components
+        $('geocoded').setValue(1);
+
+        for(typeIndex in components ){
+
+            if(components.hasOwnProperty(typeIndex)){
+                switch(components[typeIndex].types[0]){
+
+                    case "subpremise":
+                        $('sub_premise').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "street_number":
+                        $('premise').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "route":
+                        $('thoroughfare').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "locality":
+                        $('locality').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "sublocality":
+                        $('dependent_locality').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "administrative_area_level_1":
+                        $('administrative_area').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "administrative_area_level_2":
+                        $('sub_administrative_area').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case 'country':
+                        $('country').setValue(components[typeIndex].long_name);
+                        break;
+
+                    case "postal_code":
+                        $('postal_code').setValue(components[typeIndex].long_name);
+                        break;
+
+                }
+            }
+        }
+    }
+
+
+</script>
+

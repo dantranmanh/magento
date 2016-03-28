@@ -1,0 +1,330 @@
+<?php
+/**
+ * Additional scripts
+ */
+?>
+
+<?php
+	//Get grid configuration array
+	$theme = $this->helper('ultimo');
+	$gc = $theme->getCfgGroup('category_grid');
+?>
+<script type="text/javascript">
+	//<![CDATA[
+
+	<?php //Products grid: set equal height for grid items ?>
+	<?php if ($gc['equal_height']): ?>
+	var gridItemsEqualHeightApplied = false;
+	function setGridItemsEqualHeight($)
+	{
+		var $list = $('.category-products-grid');
+		var $listItems = $list.children();
+
+		var centered = $list.hasClass('centered');
+		var gridItemMaxHeight = 0;
+		$listItems.each(function() {
+			
+			$(this).css("height", "auto"); <?php //Reset height ?>
+			var $object = $(this).find('.actions');
+
+			<?php //Align button center ?>
+			if (centered)
+			{
+				var objectWidth = $object.width();
+				var availableWidth = $(this).width();
+				var space = availableWidth - objectWidth;
+				var leftOffset = space / 2;
+				$object.css("padding-left", leftOffset + "px"); <?php //Set left offset of the button ?>
+			}
+
+			<?php //Calculate top padding of the item and use it as bottom offset for the button ?>
+			var bottomOffset = parseInt($(this).css("padding-top"));
+			if (centered) bottomOffset += 10;
+			$object.css("bottom", bottomOffset + "px");
+
+			<?php //If "action" container is visible ?>
+			if ($object.is(":visible"))
+			{
+				<?php //Set new bottom padding: height of the object + bottom offset ?>
+				var objectHeight = $object.height();
+				$(this).css("padding-bottom", (objectHeight + bottomOffset) + "px");
+			}
+
+			<?php //////////////////////////////////////////////////////////////// ?>			
+			gridItemMaxHeight = Math.max(gridItemMaxHeight, $(this).height());
+		});
+
+		//Apply max height
+		$listItems.css("height", gridItemMaxHeight + "px");
+		gridItemsEqualHeightApplied = true;
+
+	}
+	<?php endif; ?>
+
+
+
+	jQuery(function($) {
+
+		<?php //Drop-down ?>
+		var ddOpenTimeout;
+		var dMenuPosTimeout;
+		var DD_DELAY_IN = 200;
+		var DD_DELAY_OUT = 0;
+		var DD_ANIMATION_IN = 0;
+		var DD_ANIMATION_OUT = 0;
+
+		$('.clickable-dropdown > .dropdown-heading').click(function() {
+			$(this).parent().addClass('open');
+			$(this).parent().trigger('mouseenter');
+		});
+
+		//$('.dropdown-heading').on('click', function(e) {
+		$(document).on('click', '.dropdown-heading', function(e) {
+			e.preventDefault();
+		});
+
+		$(document).on('mouseenter', '.dropdown', function() {
+			
+			var ddToggle = $(this).children('.dropdown-heading');
+			var ddMenu = $(this).children('.dropdown-content');
+			var ddWrapper = ddMenu.parent(); <?php //$(this); ?>
+			
+			<?php //Clear old position of dd menu ?>
+			ddMenu.css("left", "");
+			ddMenu.css("right", "");
+			
+			<?php //Show dd menu ?>
+			if ($(this).hasClass('clickable-dropdown'))
+			{
+				<?php //If dropdown is opened (parent already has class 'open') ?>
+				if ($(this).hasClass('open'))
+				{
+					$(this).children('.dropdown-content').stop(true, true).delay(DD_DELAY_IN).fadeIn(DD_ANIMATION_IN, "easeOutCubic");
+				}
+			}
+			else
+			{
+				<?php //Add class 'open' to dd ?>
+				clearTimeout(ddOpenTimeout);
+				ddOpenTimeout = setTimeout(function() {
+					
+					ddWrapper.addClass('open');
+					
+				}, DD_DELAY_IN);
+				
+				//$(this).addClass('open');
+				$(this).children('.dropdown-content').stop(true, true).delay(DD_DELAY_IN).fadeIn(DD_ANIMATION_IN, "easeOutCubic");
+			}
+			
+			<?php //Set new position of dd menu.
+			      //This code is delayed the same amount of time as drop-down animation. ?>
+			clearTimeout(dMenuPosTimeout);
+			dMenuPosTimeout = setTimeout(function() {
+
+				if (ddMenu.offset().left < 0)
+				{
+					var space = ddWrapper.offset().left; <?php //Space available on the left of dd ?>
+					ddMenu.css("left", (-1)*space);
+					ddMenu.css("right", "auto");
+				}
+			
+			}, DD_DELAY_IN);
+
+		}).on('mouseleave', '.dropdown', function() {
+			
+			var ddMenu = $(this).children('.dropdown-content');
+			clearTimeout(ddOpenTimeout); <?php //Clear, to close dd on mouseleave ?>
+			ddMenu.stop(true, true).delay(DD_DELAY_OUT).fadeOut(DD_ANIMATION_OUT, "easeInCubic");
+			if (ddMenu.is(":hidden"))
+			{
+				ddMenu.hide();
+			}
+			$(this).removeClass('open');
+		});
+		
+		
+		
+		<?php //Back to top ?>
+		var windowScroll_t;
+		$(window).scroll(function(){
+			
+			clearTimeout(windowScroll_t);
+			windowScroll_t = setTimeout(function() {
+										
+				if ($(this).scrollTop() > 100)
+				{
+					$('#scroll-to-top').fadeIn();
+				}
+				else
+				{
+					$('#scroll-to-top').fadeOut();
+				}
+			
+			}, 500);
+			
+		});
+		
+		$('#scroll-to-top').click(function(){
+			$("html, body").animate({scrollTop: 0}, 600, "easeOutCubic");
+			return false;
+		});
+		
+		
+		
+		<?php //Products grid: item hover effect --> move to product list ?>
+
+
+
+		<?php //Display product alternative image ?>
+		$('.products-grid, .products-list').on('mouseenter', '.product-image-wrapper', function() {
+			$(this).find(".alt-img").fadeIn(400, "easeOutCubic");
+		}).on('mouseleave', '.product-image-wrapper', function() {
+			$(this).find(".alt-img").stop(true).fadeOut(400, "easeOutCubic");
+		});
+
+
+
+		<?php //Fade on hover ?>
+		$('.fade-on-hover').on('mouseenter', function() {
+			$(this).animate({opacity: 0.75}, 300, 'easeInOutCubic');
+		}).on('mouseleave', function() {
+			$(this).stop(true).animate({opacity: 1}, 300, 'easeInOutCubic');
+		});
+
+
+
+		<?php //Event: deferred resize ?>
+		var dResize = {
+
+			winWidth : 0
+			, winHeight : 0
+			, windowResizeTimeout : null
+
+			, init : function()
+			{
+				dResize.winWidth = $(window).width();
+				dResize.winHeight = $(window).height();
+				dResize.windowResizeTimeout;
+
+				$(window).on('resize', function(e) {
+					clearTimeout(dResize.windowResizeTimeout);
+					dResize.windowResizeTimeout = setTimeout(function() {
+						dResize.onEventResize(e);
+					}, 50);
+				});
+			}
+
+			, onEventResize : function(e)
+			{
+				//Prevent from executing the code in IE when the window wasn't actually resized
+				var winNewWidth = $(window).width();
+				var winNewHeight = $(window).height();
+
+				//Code in this condition will be executed only if window was actually resized
+				if (dResize.winWidth != winNewWidth || dResize.winHeight != winNewHeight)
+				{
+					//Trigger deferred resize event
+					$(window).trigger("themeResize", e);
+
+					//Additional code executed on deferred resize
+					dResize.onEventDeferredResize();
+				}
+
+				//Update window size variables
+				dResize.winWidth = winNewWidth;
+				dResize.winHeight = winNewHeight;
+			}
+
+			, onEventDeferredResize : function() //Additional code, execute after window was actually resized
+			{
+				//Products grid: equal height of items
+				<?php if ($gc['equal_height']): ?>
+					setGridItemsEqualHeight($);
+				<?php endif; ?>
+
+			}
+
+		}; //end: dResize
+
+		dResize.init();
+
+
+
+	}); //end: on document ready
+	
+	
+	
+	jQuery(window).load(function(){
+		
+		<?php //Products grid: equal height of items ?>
+		<?php if ($gc['equal_height']): ?>
+			setGridItemsEqualHeight(jQuery);
+		<?php endif; ?>
+		
+			if(jQuery(window).width() > 767){ 
+				$ruc = jQuery('.registered-users-content').height();
+				$nuc = jQuery('.new-user-content').height();
+				var $ehei = 9999;
+				if($ruc > $nuc){
+					$ehei = $ruc;
+				}else{
+					$ehei = $nuc;
+				}
+				jQuery('.registered-users-content').css('height',$ehei);
+				jQuery('.new-user-content').css('height',$ehei);
+			}
+ 			
+			/* var $minheight = 99999999;
+			jQuery('.landing-content img').each(function(){
+				$thisheight = jQuery(this).height();
+				if($minheight >= $thisheight){ 
+					$minheight = $thisheight;
+				}else{ 	
+					$minheight = $minheight;
+				}
+				
+			});
+			jQuery('.landing-content img').each(function(){
+				jQuery(this).css('max-height',$minheight);
+			});  */ 
+		
+	}); //end: jQuery(window).load(){...}
+			
+		jQuery(window).on('resize', function() { 
+			
+			if(jQuery(window).width() > 767){ 
+				$ruc1 = jQuery('.registered-users-content').height();
+				$nuc1 = jQuery('.new-user-content').height();
+				var $ehei = 9999;
+				if($ruc1 > $nuc1){
+					$ehei = $ruc1;
+				}else{
+					$ehei = $nuc1;
+				}
+				jQuery('.registered-users-content').css('height',$ehei);
+				jQuery('.new-user-content').css('height',$ehei);
+			}else{
+				jQuery('.registered-users-content').css('height','auto');
+				jQuery('.new-user-content').css('height','auto');
+			}
+			/* jQuery('body .landing-content img').each(function(){
+				jQuery(this).css('max-height','auto');
+			});  */
+		/* 	var $minheight1 = 99999999;
+			jQuery('.landing-content img').each(function(){
+				$thisheight1 = jQuery(this).height();
+				if($minheight1 >= $thisheight1){ 
+					$minheight1 = $thisheight1;
+				}else{ 	
+					$minheight1 = $minheight1;
+				}
+				
+			});
+			alert($minheight1);
+			jQuery('.landing-content img').each(function(){
+				jQuery(this).css('max-height',$minheight1);
+			});  */
+		});
+
+	//]]>
+</script>

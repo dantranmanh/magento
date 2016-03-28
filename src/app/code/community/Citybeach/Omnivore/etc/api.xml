@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <omproduct translate="title" module="citybeach_omnivore">
+                <title>Omnivore extension to Product API</title>
+                <acl>omproduct</acl>
+                <model>Citybeach_Omnivore_Model_Product_Api</model> <!-- not in magento example -->
+                <methods>
+                    <info translate="title" module="citybeach_omnivore">
+                        <title>Retrieve product info and associated IDs</title>
+                        <acl>omproduct/info</acl>
+                    </info>
+                </methods>
+                <faults module="citybeach_omnivore">
+                </faults>
+            </omproduct>
+            <omorder translate="title" module="citybeach_omnivore">
+                <title>Omnivore extension to Cart API</title>
+                <acl>omorder</acl>
+                <model>Citybeach_Omnivore_Model_Order_Api</model>
+                <methods>
+                    <json2order translate="title" module="citybeach_omnivore">
+                        <title>Create a Quote and transform it into an Order</title>
+                        <acl>omorder/json2order</acl>
+                    </json2order>
+                </methods>
+                <faults module="citybeach_omnivore">
+                </faults>
+            </omorder>
+            <omstore translate="title" module="citybeach_omnivore">
+                <title>Omnivore extension to Store API</title>
+                <acl>omstore</acl>
+                <model>Citybeach_Omnivore_Model_Store_Api</model>
+                <methods>
+                    <shipping translate="title" module="citybeach_omnivore">
+                        <title>List carriers and shipping methods</title>
+                        <acl>omstore/shipping</acl>
+                    </shipping>
+                </methods>
+                <faults module="citybeach_omnivore">
+                </faults>
+            </omstore>
+        </resources>
+        <acl>
+            <resources>
+                <omproduct translate="title" module="citybeach_omnivore">
+                    <title>Omnivore extension to Product API</title>
+                    <info translate="title" module="citybeach_omnivore">
+                        <title>Retrieve product info and associated IDs</title>
+                    </info>
+                </omproduct>
+                <omorder translate="title" module="citybeach_omnivore">
+                    <title>Omnivore extension to Cart API</title>
+                    <json2order translate="title" module="citybeach_omnivore">
+                        <title>Create a Quote and transform it into an Order</title>
+                    </json2order>
+                </omorder>
+                <omstore translate="title" module="citybeach_omnivore">
+                    <title>Omnivore extension to Store API</title>
+                    <shipping translate="title" module="citybeach_omnivore">
+                        <title>List carriers and shipping methods</title>
+                    </shipping>
+                </omstore>
+            </resources>
+        </acl>
+    </api>
+</config> 

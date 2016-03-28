@@ -1,0 +1,944 @@
+.onestepcheckout-index-index .page-title{
+	margin-bottom:10px;
+}
+.onestepcheckout-index-index .page-title h1{
+	min-height:0;
+}
+ol.checkout-agreements {
+    margin-top: 10px;
+}
+
+.onestepcheckout-extraproducts {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.onestepcheckout-extraproducts span {
+    font-weight: bold;
+}
+
+.onestepcheckout-extraproducts li {
+    padding: 2px 0;
+}
+
+.onestepcheckout-place-order-loading {
+    text-align: right;
+    margin-top: 10px;
+    padding-left: 20px;
+    font-style: italic;
+    background: url("images/ajax-loader.gif") no-repeat;
+    display: inline-block;
+}
+
+select.address-select {
+    margin: 3px 0 3px 0;
+    width: 95% !important;
+}
+
+.onestepcheckout-enterprise span.validation-error,.onestepcheckout-enterprise div.validation-error
+    {
+    padding-right: 0;
+}
+
+ul.onestepcheckout-custom-options {
+    margin: 0 0 0 20px;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.onestepcheckout-coupons input#id_couponcode {
+    margin-bottom: 5px;
+    width: 200px;
+}
+
+.onestepcheckout-giftcards input#id_giftcardcode {
+    margin-bottom: 5px;
+    width: 200px;
+}
+
+#onestepcheckout-form label {
+    font-weight: normal !important;
+	font:400 13px/22px Raleway, Arial;
+	color:#333333;
+}
+#onestepcheckout-form label strong{
+	font-weight:normal;
+}
+#onestepcheckout-form input[type="radio"] + label, #onestepcheckout-form input[type="checkbox"] + label{
+	line-height:30px;
+}
+#onestepcheckout-form select {
+	padding:10px;
+}
+
+.onestepcheckout-summary,.onestepcheckout-totals {
+    border-collapse: collapse;
+}
+
+.onestepcheckout-summary{
+	margin-top:-14px;
+}
+.onestepcheckout-totals {
+
+}
+
+.onestepcheckout-summary th{
+	padding:16px 0;
+	line-height: 18px;
+}
+.onestepcheckout-summary td
+{
+    padding: 17px 0;
+    line-height: 18px;
+}
+.onestepcheckout-totals td{
+	padding:3px 0;
+}
+
+.onestepcheckout-summary th {
+    border-bottom: 1px solid #e5e5e5;
+	border-top:0;
+}
+
+.onestepcheckout-summary td {
+    border-bottom: 1px solid #e5e5e5;
+}
+.onestepcheckout-totals td{
+	border:0;
+}
+
+p.onestepcheckout-description {
+
+}
+
+#onestepcheckout-form .group-select {
+
+}
+
+div.onestepcheckout-threecolumns {
+    margin-top: 25px;
+}
+
+div.onestepcheckout-threecolumns h1 {
+    font-family: Arial,serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+div.onestepcheckout-threecolumns div.onestepcheckout-column-left {
+    width: 30%;
+    float: left;
+    margin-right: 5%;
+    padding-top: 15px;
+}
+
+div.onestepcheckout-threecolumns div.onestepcheckout-column-middle {
+    width: 30%;
+    float: left;
+    margin-right: 0;
+    padding-right: 15px;
+    padding-top: 15px;
+}
+
+div.onestepcheckout-threecolumns div.onestepcheckout-column-right {
+    width: 29.8%;
+    float: right;
+    padding-top: 15px;
+}
+
+p.onestepcheckout-login-link {
+    padding-top: 0;
+}
+
+#onestepcheckout-email-error {
+    width: 245px;
+    clear: both;
+    padding-top: 3px;
+}
+
+div.onestepcheckout-error {
+    color: #DF280A;
+    border: 1px solid #DF280A;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 25px;
+    background: #FAEBE7 url(images/onestepcheckout-error.jpg) no-repeat 5px 5px;
+}
+
+.onestepcheckout-column-left .onestepcheckout-error {
+    width: 85% !important;
+}
+
+div.onestepcheckout-enable-newsletter {
+    margin-bottom: 10px;
+    /*text-align: right;*/
+}
+
+div.onestepcheckout-enable-newsletter-bottom {
+    margin-top: 20px;
+    text-align: right;
+}
+
+div.onestepcheckout-enable-terms { /*text-align: right;*/
+    margin-top: 10px;
+}
+
+table.onestepcheckout-summary {
+    width: 100%;
+}
+
+table.onestepcheckout-summary td.name {
+    width: 64%;
+}
+
+table.onestepcheckout-summary td.qty,table.onestepcheckout-summary th.qty
+    {
+    width: 10%;
+    text-align: center;
+}
+
+table.onestepcheckout-summary td.total,table.onestepcheckout-summary th.total
+    {
+    width: 35%;
+    text-align: right;
+}
+
+table.onestepcheckout-totals {
+    width: 100%;
+	margin-top:14px;
+    margin-bottom: 15px;
+}
+
+table.onestepcheckout-totals tr.grand-total td {
+    font-weight: normal;
+	border-bottom: 1px solid #ddd;
+    padding-bottom: 18px;
+}
+
+table.onestepcheckout-totals td.title {
+    width: 67%;
+    text-align: right;
+}
+table.onestepcheckout-totals td.title span{
+	/*text-align:left;*/
+	/*min-width:75px;*/
+	float:right;
+    padding-right: 10px;
+}
+table.onestepcheckout-totals td.value {
+    width: 35%;
+    text-align: right;
+}
+table.onestepcheckout-totals tbody th{
+    text-align: right;
+}
+div.onestepcheckout-place-order-wrapper {
+    text-align: right;
+    margin-top: 20px;
+}
+div.onestepcheckout-place-order-wrapper button.account-button{
+	width:100%;
+}
+div.onestepcheckout-place-order-wrapper button.account-button span{
+	font-size:18px;
+}
+
+div.checkoutcontainer {
+    min-height: 33em;
+    overflow: hidden;
+	border:1px solid #e5e5e5;
+	padding:2% 3%;
+}
+
+div.checkoutcontainer .checkout-error-message {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #ff0000;
+}
+
+div.checkoutcontainer .payment-methods .form-list label {
+    text-align: left !important;
+}
+
+div.checkoutcontainer div.input-error label {
+    color: #ff0000 !important;
+}
+
+div.checkoutcontainer div.input-error input,div.checkoutcontainer div.input-error select
+    {
+    border: 1px solid #ff0000 !important;
+}
+
+div.checkoutcontainer div.input-different-shipping {
+    margin-top: 10px;
+}
+
+div.checkoutcontainer div.input-address-short,div.checkoutcontainer div.input-firstname,div.checkoutcontainer div.input-lastname,div.checkoutcontainer div.input-email,div.checkoutcontainer div.input-company,div.checkoutcontainer div.input-fax,div.checkoutcontainer div.input-password
+    {
+    width: 47%;
+    float: left;
+}
+div.checkoutcontainer div.input-lastname, div.checkoutcontainer div.input-region, div.checkoutcontainer div.input-fax, div.checkoutcontainer div.input-confirm-password{
+	float:right;
+}
+div.checkoutcontainer #shipping_address_list div.input-telephone{
+	float:left;
+}
+
+div.checkoutcontainer li.taxvat .input-text {
+    width: 83% !important;
+}
+
+div.checkoutcontainer div.input-address-short .input-text, div.checkoutcontainer div.input-firstname .input-text,div.checkoutcontainer div.input-lastname .input-text,div.checkoutcontainer div.input-email .input-text,div.checkoutcontainer div.input-company .input-text,div.checkoutcontainer div.input-fax .input-text,div.checkoutcontainer div.input-password .input-text
+{
+    width: 100%;
+}
+div.checkoutcontainer div.input-email + div.input-telephone{
+    float: right;
+    width: 47%;
+}
+div.checkoutcontainer input.input-text{
+	margin-top:4px;
+	margin-bottom:0;
+}
+div.checkoutcontainer input.onestepcheckout-address-line{
+	margin-top:-13px;
+}
+div.checkoutcontainer input.onestepcheckout-address-line.input-address-1{
+	margin-top:8px;
+	margin-bottom:2px;
+}
+
+div.checkoutcontainer div.input-address,div.checkoutcontainer div.input-city,div.checkoutcontainer li.taxvat div.input-box
+    {
+    width: 100% !important;
+}
+
+div.checkoutcontainer div.input-address .input-text,div.checkoutcontainer div.input-city .input-text
+    {
+    width: 100%;
+}
+
+div.checkoutcontainer div.input-postcode {
+    width: 47%;
+    float: left;
+}
+
+div.checkoutcontainer div.input-postcode .input-text {
+    width: 100%;
+}
+
+div.checkoutcontainer div.input-region {
+    width: 47%;
+    float: right;
+}
+
+div.checkoutcontainer div.input-region .input-text {
+    width: 100%;
+}
+
+div.checkoutcontainer div.input-country {
+    width: 100%;
+}
+
+div.checkoutcontainer div.input-country select {
+    width: 100%;
+}
+
+div.checkoutcontainer div.input-region select {
+    width: 100% !important;
+	margin:4px 0 2px 0;
+}
+div.checkoutcontainer div.input-box.chk-create-acc{
+	margin:6px 0 12px -3px;
+}
+div.checkoutcontainer div.input-box.input-different-shipping{
+	margin:14px 0 -5px -3px;
+}
+#shipping_address{
+	margin-top:20px;
+}
+
+fieldset.group-select {
+}
+
+.group-select li {
+    padding: 4px 0;
+}
+.group-select li.billing-address-title{
+	padding:0;
+}
+
+.shipment-methods dd {
+    margin: 0 !important;
+}
+
+p.checkout-choose-payment-method,p.checkout-choose-shipping-method {
+    margin-top: 1em;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+p.checkout-choose-payment-method {
+    margin-top: 2em !important;
+}
+
+.payment-methods{
+	padding-top:10px;
+}
+.payment-methods dd > ul, .payment-methods dd > div, .payment-methods dd > p{
+    padding: 22px 0 0 1px;
+}
+
+.payment-methods dd li {
+    padding: 0;
+}
+
+div.onestepcheckout-shipping-method {
+    margin-bottom: 20px;
+}
+.onestepcheckout-shipping-method-block{
+	padding-top:10px;
+	margin-bottom:41px;
+}
+.onestepcheckout-shipping-method-block strong.no-shiping-mehthod{
+	font-weight:normal;
+	margin-top:10px;
+	clear: both;
+    display: block;
+}
+
+div.loading-ajax, div.loading-ajax-login {
+    height: 50px;
+    text-align: center;
+    background: url(images/ajax-loader.gif) no-repeat center center;
+}
+
+p.onestepcheckout-numbers {
+    color: #333333;
+    text-transform: uppercase;
+    font:17px/26px GillSansSemiBold, Arial;
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom:20px;
+	margin-bottom:15px;
+}
+
+
+div.onestepcheckout-skin-magento .onestepcheckout-numbers {
+    padding-top: 0;
+    height: 25px !important;
+    text-transform: capitalize !important;
+    color: #F18200 !important;
+    font-size: 13px !important;
+}
+
+/* Popup CSS */
+#onestepcheckout_popup_overlay_iframe {
+    z-index: 100000;
+    background-color: #000000;
+    opacity: 0.8;
+    filter: alpha(opacity =   80);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+#onestepcheckout_popup_overlay {
+    z-index: 1000000;
+    background-color: #000000;
+    opacity: 0.8;
+    filter: alpha(opacity =   80);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+#onestepcheckout-toc-popup {
+    width: 482px;
+    height: 530px;
+    position: absolute;
+    z-index: 1000001;
+}
+
+#onestepcheckout-toc-popup .onestepcheckout-popup-contents {
+    height: 515px !important;
+}
+
+#onestepcheckout-toc-popup div.onestepcheckout-popup-contents {
+    overflow: auto;
+    height: 450px;
+}
+
+#onestepcheckout-toc-popup h1 {
+    margin-left: 20px;
+}
+
+#onestepcheckout-toc-popup .onestepcheckout-toc-terms {
+    margin: 0 20px 20px;
+    height: 440px !important;
+    overflow: auto;
+    padding-right: 10px;
+}
+
+#onestepcheckout-login-popup,#onestepcheckout-toc-popup {
+    text-align: left !important;
+}
+
+.onestepcheckout-popup-contents h1 {
+    font-size: 18px !important;
+    padding-top: 5px !important;
+	margin-bottom:5px;
+}
+
+.onestepcheckout-popup-contents {
+	background:#FFF;
+    border-radius: 10px;
+    border: 3px solid #fff;
+    margin: 0px 20px 0px 20px;
+    padding: 10px 10px 10px 10px;
+}
+
+.onestepcheckout-popup-contents label {
+    font-weight: normal;
+}
+
+.onestepcheckout-popup-contents .input-text {
+    width: 100%;
+}
+
+
+/* Popup CSS (login link) */
+#onestepcheckout-login-popup {
+    max-width: 482px;
+    position: absolute;
+    z-index: 1000001;
+    /*position: fixed;*/
+}
+
+#onestepcheckout-login-popup button {
+    padding: 3px 10px;
+}
+
+#onestepcheckout-login-popup div.onestepcheckout-popup-contents {
+
+}
+#onestepcheckout-login-popup p
+    {
+    padding: 5px 0px 0px 0px;
+	text-align:center;
+}
+#onestepcheckout-login-popup .input-button
+{
+    padding-top: 5px;
+}
+#onestepcheckout-login-popup .input-button button
+{
+    float: left;
+    margin: 0;
+    height: 55px;
+    line-height: 50px;
+    background: #ffdd00;
+    color: #000;
+    width:100%;
+	text-transform: uppercase;
+    font-family: GillSansSemiBold;
+    font-weight: normal;
+    font-size: 14px;
+	border: 3px solid #ffdd00;
+}
+#onestepcheckout-login-popup .input-button button:hover{
+	background:#ffec70 !important
+}
+
+#onestepcheckout-login-popup p.close,#onestepcheckout-toc-popup p.close
+    {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: absolute;
+    right: 28px;
+    top: 4px;
+}
+
+#onestepcheckout-login-popup p.close a,#onestepcheckout-login-popup p.close a:link,#onestepcheckout-login-popup p.close a:visited,#onestepcheckout-toc-popup p.close a,#onestepcheckout-toc-popup p.close a:link,#onestepcheckout-toc-popup p.close a:visited
+    {
+    text-decoration: none;
+    color: #000000;
+}
+
+#onestepcheckout-login-popup p.close a:hover,#onestepcheckout-toc-popup p.close a:hover
+    {
+    text-decoration: underline;
+}
+
+#onestepcheckout-login-error,#onestepcheckout-forgot-error {
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+div.onestepcheckout-comments {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+div.onestepcheckout-comments textarea {
+    margin-top: 3px;
+    width: 100%;
+	max-width:100%;
+	min-height:100px;
+}
+
+/* onestepcheckout-twocolumns */
+.onestepcheckout-two-columns .onestepcheckout-column-left {
+    width: 47%;
+    float: left;
+    margin-right: 30px;
+    background: transparent url(images/line-gradient.gif) no-repeat scroll
+        right top;
+}
+
+.onestepcheckout-two-columns .onestepcheckout-column-right {
+    width: 43%;
+    float: left;
+}
+
+.onestepcheckout-two-columns p.onestepcheckout-numbers {
+    margin-top: 20px !important;
+}
+
+.onestepcheckout-two-columns div.onestepcheckout-enable-terms {
+    text-align: center !important;
+}
+
+.onestepcheckout-two-columns div.onestepcheckout-place-order-wrapper {
+    text-align: center !important;
+    margin-top: 10px !important;
+}
+
+.onestepcheckout-two-columns div.onestepcheckout-enable-newsletter {
+    text-align: center !important;
+}
+
+.checkoutcontainer .payment-methods .input-box {
+    width: 100% !important;
+}
+
+.checkoutcontainer .payment-methods .input-box .input-text,.checkoutcontainer .payment-methods .input-box textarea,.checkoutcontainer .payment-methods .input-box select
+    {
+    width: 100% !important;
+}
+
+.checkoutcontainer .payment-methods .input-box select#protxDirect_expiration_yr,.checkoutcontainer .payment-methods .input-box select#protxDirect_start_yr
+    {
+    width: 122px !important;
+}
+.checkoutcontainer .payment-methods .v-fix{
+	width:56%;
+}
+.checkoutcontainer .payment-methods .v-fix.v-fix-year, .checkoutcontainer .payment-methods .v-fix:nth-child(2n+0){
+	float:right;
+	width:38%;
+}
+.checkoutcontainer .payment-methods .input-box select.month, .checkoutcontainer .payment-methods .input-box select.year{
+	width:100%,
+}
+.checkoutcontainer .payment-methods .cvv-what-is-this {
+    margin-left: 18px;
+    line-height: 50px;
+}
+.checkoutcontainer .payment-methods .input-box select#protxDirect_start,.checkoutcontainer .payment-methods .input-box select#protxDirect_expiration
+    {
+    width: 180px !important;
+}
+
+.checkoutcontainer li.shipping-address-title {
+    font-family: Arial,sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #404040;
+    font-weight: bold;
+    padding-top: 5px;
+}
+
+.onestepcheckout-giftmessagecontainer {
+    margin-bottom: 10px;
+}
+
+.onestepcheckout-giftmessagecontainer .input-checkbox {
+    /*text-align: right;*/
+
+}
+
+#onestepcheckout-giftmessages .onestepcheckout-giftmessages fieldset.group-select {
+    padding: 0 !important;
+    border: 0 !important;
+    margin: 0 !important;
+}
+
+.onestepcheckout-giftmessages .group-select li .input-box-last {
+    margin-right: 0 !important;
+}
+
+.onestepcheckout-giftmessages .group-select li .input-box {
+    width: 125px;
+    margin-right: 20px;
+}
+
+.onestepcheckout-giftmessages .group-select li .input-box .input-text {
+    width: 120px;
+}
+
+.onestepcheckout-giftmessages .group-select li textarea {
+    width: 267px;
+}
+
+.onestepcheckout-address-line {
+    margin-bottom: 10px;
+}
+
+.onestepcheckout-column-left .customer-dob .dob-month,.onestepcheckout-column-left .customer-dob .dob-day,.onestepcheckout-column-left .customer-dob .dob-year
+    {
+    float: left;
+}
+
+.onestepcheckout-column-left .customer-dob input.input-text {
+    display: block;
+    width: 74px;
+}
+
+.onestepcheckout-column-left .customer-dob label {
+    font-size: 10px;
+    font-weight: normal;
+    color: #888;
+}
+
+.onestepcheckout-column-left .customer-dob .dob-day,.onestepcheckout-column-left .customer-dob .dob-month
+    {
+    width: 60px;
+}
+
+.onestepcheckout-column-left .customer-dob .dob-day input.input-text,.onestepcheckout-column-left .customer-dob .dob-month input.input-text
+    {
+    width: 46px;
+}
+
+.onestepcheckout-column-left .customer-dob .dob-year {
+    width: 110px;
+}
+
+.onestepcheckout-column-left .customer-dob .dob-year input.input-text {
+    width: 115px;
+}
+.onestepcheckout-feedback, .onestepcheckout-feedback-freetext {
+    padding-top: 10px;
+}
+.onestepcheckout-feedback select {
+    width:95%;
+}
+.onestepcheckout-feedback-freetext textarea{
+    width:95%;
+}
+.onestepcheckout-coupon-code-notice {
+}
+#control_overlay {
+    background-color:#000;
+}
+
+.oscmodal {
+    background-color:#fff;
+    padding:10px;
+    border:1px solid #333;
+}
+#addressreview {
+    width: 750px;
+    min-height: 430px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #E9EAEE;
+    border: 2px solid white;
+    padding: 15px 40px 20px 40px;
+    margin: 0 auto;
+    text-align: left;
+    box-shadow: 1px 2px 6px rgba(0,0,0, 0.5);
+    -moz-box-shadow: 1px 2px 6px rgba(0,0,0, 0.5);
+    -webkit-box-shadow: 1px 2px 6px rgba(0,0,0, 0.5);
+    position:relative;
+}
+#addressreview .leftcol{
+    float: left;
+    width: 200px;
+}
+#addressreview .rightcol{
+    float: left;
+    width: 540px;
+}
+#addressreview h4 {
+    padding-top: 15px;
+    padding-bottom: 3px;
+    font-size: 16px;
+}
+#addressreview #buttons {
+    position: absolute;
+    right: 40px;
+    bottom: 20px;
+}
+#addressreview #buttons div {
+    float: left;
+    zoom: 1;
+    margin: 0 10px 0 10px;
+}
+#addressreview_summary div.data {
+    height: 375px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+.checkout-agreements li {
+    margin: 0;
+}
+.checkout-agreements .agree {
+    margin: 0;
+    padding: 0;
+}
+.agreement-content {
+    overflow: auto;
+    text-align:left;
+}
+label.required:after, span.required:after {
+    content: '' !important;
+}
+span.required {
+    color: #F00;
+}
+.form-list label.required em{
+	display:block;
+}
+.checkout-header{
+	padding-top:40px;
+}
+.checkout-header .header-primary .checkout-header-container{
+	border-bottom:1px solid #e5e5e5;
+	padding-bottom: 41px;
+    margin-bottom: 15px;
+	clear: both;
+    display: block;
+    overflow: hidden;
+}
+.checkout-header .grid12-4{
+	margin:0 !important;
+	width:33.33%;
+}
+.checkout-header .header-back button.button{
+	margin-top:11px;
+	width:144px;
+}
+.checkout-header .header-logo{
+	text-align:center;
+}
+.checkout-header .header .logo-wrapper a.logo{
+	margin:0;
+}
+.checkout-header .header-nav{
+	text-align:right;
+}
+.checkout-header .header-nav .header-call{
+	margin-top:7px;
+}
+.checkout-header .header-nav .header-call a{
+	font:700 13px/45px Raleway, Arial;
+}
+.checkout-header .header-nav .header-call a span{
+	font-weight:600;
+}
+.onestepcheckout-index-index #giftvoucher_container dt label{
+    display: block!important;
+}
+@media only screen and (min-width: 1280px){
+	.onestepcheckout-index-index .main.container{
+		min-height:1042px;
+		padding:10px 0;
+	}
+	div.checkoutcontainer {
+		padding:20px 39px;
+	}
+	.onestepcheckout-index-index .footer-bottom{
+		padding-top:36px;
+	}
+}
+
+@media only screen and (max-width: 959px) and (min-width: 768px){
+	div.onestepcheckout-threecolumns div.onestepcheckout-column-left{
+		width:45%;
+		margin-right: 2%;
+	}
+	div.onestepcheckout-threecolumns div.onestepcheckout-column-middle, div.onestepcheckout-threecolumns div.onestepcheckout-column-right{
+		width:50%;
+		padding:15px 0 0 0;
+		margin:0;
+		float:right;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.checkout-header .grid12-4{
+		text-align:center !important;
+		width:50% !important;
+	}
+	.header-mobile .checkout-header .logo-wrapper--regular{
+		display:block !important;
+	}
+	.checkout-header .header-nav .header-call{
+		display:none;
+	}
+	.checkout-header{
+		padding-top:20px;
+	}
+	.checkout-header .header-primary .checkout-header-container{
+		padding-bottom:20px;
+		margin-bottom:0;
+	}
+}
+@media only screen and (min-width: 640px) and (max-width: 767px) {
+	div.onestepcheckout-threecolumns div.onestepcheckout-column-left{
+		width:45%;
+		margin-right: 2%;
+	}
+	div.onestepcheckout-threecolumns div.onestepcheckout-column-middle, div.onestepcheckout-threecolumns div.onestepcheckout-column-right{
+		width:50%;
+		padding:15px 0 0 0;
+		margin:0;
+		float:right;
+		clear:right;
+	}
+}
+
+@media only screen and (max-width: 639px) {
+	div.onestepcheckout-threecolumns div.onestepcheckout-column-left,div.onestepcheckout-threecolumns div.onestepcheckout-column-middle, div.onestepcheckout-threecolumns div.onestepcheckout-column-right{
+		width:100%;
+		padding:15px 0 0 0;
+		margin:0;
+	}
+    div.onestepcheckout-column-left #billing_address #uniform-billing-address-select > span {
+        height: 60px;
+        white-space: normal;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+	.checkout-header .grid12-4{
+		width:100% !important;
+	}
+	.checkout-header .grid12-4.header-back{
+		display:none;
+	}
+}

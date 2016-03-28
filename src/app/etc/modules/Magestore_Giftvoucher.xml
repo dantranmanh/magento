@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Magestore_Giftvoucher>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Magestore_Giftvoucher>
+        <!-- Disable Enterprise Gift Card -->
+        <Enterprise_GiftCard>
+            <codePool>local</codePool>
+        </Enterprise_GiftCard>
+        <Enterprise_GiftCardAccount>
+            <codePool>local</codePool>
+        </Enterprise_GiftCardAccount>
+    </modules>
+</config>

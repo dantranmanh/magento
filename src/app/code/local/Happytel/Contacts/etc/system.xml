@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <contacts translate="label" module="contacts">
+            <groups>
+                <email translate="label">
+                    <fields>
+                        <be_recipient_email translate="label">
+                            <label>Send Customer Service Emails To</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-email required-entry</validate>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </be_recipient_email>
+                        <cse_recipient_email translate="label">
+                            <label>Send Business Enquiry Emails To</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-email required-entry</validate>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cse_recipient_email>
+                    </fields>
+                </email>
+            </groups>
+        </contacts>
+    </sections>
+</config>

@@ -1,0 +1,117 @@
+<div class="loc-srch">
+    <form class="loc-srch-form" action="<?php echo Mage::getURL('') ?>locator/search/" id="locator-search">
+		<!--<label><?php echo $this->__('Find you nearest HappyTel'); ?></label>
+        <select name="a">
+            <option value=""><?php echo $this->__('Any State'); ?></option>
+            <option value="victoria"><?php echo $this->__('Victoria'); ?></option>
+            <option value="new south wales"><?php echo $this->__('New South Wales'); ?></option>
+            <option value="queensland"><?php echo $this->__('Queensland'); ?></option>
+            <option value="western australia"><?php echo $this->__('Western Australia'); ?></option>
+            <option value="northern territory"><?php echo $this->__('Northern Territory'); ?></option>
+            <option value="south australia"><?php echo $this->__('South Australia'); ?></option>
+            <option value="tasmania"><?php echo $this->__('Tasmania'); ?></option>
+			<option value="australian capital territory" <?php if($a == 'australian capital territory') echo 'selected="selected"'; ?>><?php echo $this->__('Australian Capital Territory'); ?></option>
+        </select>
+		<span class="span-and"> & </span>-->
+
+        <label><?php echo $this->__('Select a country'); ?></label>
+        <?php
+        $countries = array(
+            'Australia' => 'Australia',
+            'New Zealand' => 'New Zealand',
+            'Other' => ''
+        );
+        $param = $this->getRequest()->getParam('country');
+
+        if (isset($param)) {
+            $selected = $param;
+        } else {
+            //if no parameters are passed from the url, see if we can get them from config
+            $defaultsearch = Mage::helper('ak_locator/search')->parseQueryString(Mage::getStoreConfig('locator_settings/search/default_search_params'));
+            if (isset($defaultsearch['country'])) {
+                $selected = $defaultsearch['country'];
+            }
+        }
+        ?>
+        <div class="box-select-country">
+            <select id="loc-search-country" class="loc-srch-country" name="country">
+                <?php foreach ($countries as $country => $value) : ?>
+                    <option <?php if (isset($selected) && $country == $selected ) { echo 'selected="selected"';} ?> value="<?php echo $value; ?>"><?php echo $country; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="box-search">
+            <input id='locator-autocomplete' name="s" type="text" class="loc-srch-s input-text required-entry" placeholder="<?php echo $this->__('Enter a postcode or suburb') ?>" value="<?php echo $this->getRequest()->getParam('s'); ?>" />
+        </div>
+
+        <div class="box-radius">
+            <?php
+            $distances = array(
+                '10' => '10 Kilometres',
+                '15' => '15 Kilometres',
+                '20' => '20 Kilometres',
+                '25' => '25 Kilometres',
+                '50' => '50 Kilometres',
+                '100' => '100 Kilometres'
+            );
+            ?>
+            Within
+            <select id="distance" name="distance">
+                <?php foreach ($distances as $value => $distance): ?>
+                    <option value="<?php echo $value ?>"> <?php echo $distance ?> </option>
+                <?php endforeach;?>
+            </select>
+        </div>
+
+        <div class="button-acts">
+            <button type="submit" class="btn" id="btn-search" onclick = "if(dataForm.validator && dataForm.validator.validate()){redirect(); return false;}"><?php echo $this->__('search'); ?></button>
+            <span class="loc-loader loader loader-med"></span>
+        </div>
+		
+    </form>
+    <div class="box-search-areas">
+        <?php
+        $a = '';
+        if($this->getRequest()->getParam('a') && $this->getRequest()->getParam('a') != ''){
+            $a = $this->getRequest()->getParam('a');
+        }
+        ?>
+        <span class="or"><?php echo $this->__('OR '); ?></span>
+        <?php
+        // This is just an example of how the theme level can be used to link to different types of searches
+        ?>
+        <span class="search-areas">
+            <a class="loc-trigger<?php if (strtolower($a) == 'vic') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=vic">VIC</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'nsw') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=nsw">NSW</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'qld') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=qld">QLD</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'wa') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=wa">WA</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'nt') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=nt">NT</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'sa') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=sa">SA</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'tas') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=tas">TAS</a><span class="separator">|</span>
+            <a class="loc-trigger<?php if (strtolower($a) == 'act') echo " selected"; ?>" href="<?php echo Mage::getURL('') ?>locator/search/?a=act">ACT</a>
+        </span>
+    </div>
+</div>
+<script type="text/javascript">
+    var dataForm = new VarienForm('locator-search', true);
+	
+	function redirect(){
+		var a = jQuery('#locator-search select').val();
+		var s = jQuery('#locator-search input.input-text').val();
+		var query = '';
+		if(a != ''){
+			query = query+'a='+a;
+		}
+		if(a != '' && s != ''){
+			query = query+'&';
+		}
+		if(s != ''){
+			query = query+'s='+s;
+		}
+		
+		var href = jQuery('#locator-search').attr('action') + "?" + query;
+		jQuery('#btn-search').addClass('is-loading');
+		window.location.href=href;
+	}
+</script>

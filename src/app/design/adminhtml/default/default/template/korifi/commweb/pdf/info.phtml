@@ -1,0 +1,3 @@
+<?php echo $this->htmlEscape($this->getMethod()->getTitle()); ?>
+    {{pdf_row_separator}}
+<?php echo Mage::helper('commWeb')->__('Transaction ID: %s', $this->htmlEscape($this->getInfo()->getLastTransId())); ?>

@@ -1,0 +1,43 @@
+<?php
+ /**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2015 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 4.9
+ * @since        Class available since Release 2.0
+ */
+?>
+
+<ol class="<?php if($this->canShowCheckbox()):?>gan-list-checkbox<?php endif;?> <?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK):?>gan-inblock-list<?php endif;?>" 
+	<?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK
+			&& $this->getInblockType()==GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Type_Inblock::TYPE_FIXED):?>style="height:<?php echo $this->getInBlockHeight(); ?>px;"<?php endif;?>
+	<?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK 
+			&& $this->getInblockType()==GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Type_Inblock::TYPE_AUTO):?>style="max-height:<?php echo $this->getMaxInBlockHeight(); ?>px;"<?php endif; ?>
+			>
+<?php $_top_level = null; ?>
+<?php foreach ($this->getItems() as $_item): ?>
+    <?php if (!$_top_level) $_top_level = $_item->getLevel(); ?>
+    <li style="padding-left: <?php echo 10*($_item->getLevel() - $_top_level); ?>px; float: none !important;" >
+        <?php if (($_item->getCount() > 0) || $_item->getHasChild() || $_item->getActive()): ?>
+            <?php $data_param = $_item->getActive() ? $_item->getRemoveUrlParams() : $_item->getUrlParams(false); ?>
+            <a data-ajax="<?php echo ($this->ajaxEnabled()) ? 1 : 0 ;?>" data-param="<?php echo $data_param; ?>" data-url="<?php echo $_item->getCleanUrl(); ?>" <?php if($_item->getActive()):?> class="active" <?php endif;?> onclick="GomageNavigation.click(this); return false;" href="<?php echo $_item->getCleanUrl(). $data_param; ?>">
+                <?php echo $_item->getLabel() ?>
+                <?php if ( Mage::getStoreConfigFlag('gomage_navigation/filter_settings/values_qty') == 1 ):?>
+                     <span class="count">(<?php echo $_item->getCount() ?>)</span>
+                <?php endif; ?>
+            </a>
+        <?php else: ?>
+            <?php echo $_item->getLabel() ?>
+            <?php if(!$_item->getActive()):?>
+                <?php if ( Mage::getStoreConfigFlag('gomage_navigation/filter_settings/values_qty') == 1 ):?>
+                    (<?php echo $_item->getCount() ?>)
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    </li>
+<?php endforeach ?>
+</ol>

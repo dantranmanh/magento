@@ -1,0 +1,16 @@
+<div class="outside-content page-title"></div>
+
+<script type="text/javascript">
+	setTimeout(function(){
+		if(jQuery('.outside-content-title').length > 0){
+			jQuery('.outside-content').html(jQuery('.outside-content-title').html());
+			
+			if(jQuery('.outside-content-title').length > 0){
+				jQuery('.outside-content-title').remove();
+			}
+		}
+		else{
+			jQuery('.outside-content').remove();
+		}
+	}, 1000);
+</script>

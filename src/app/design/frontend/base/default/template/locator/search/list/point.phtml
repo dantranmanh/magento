@@ -1,0 +1,66 @@
+<?php
+/**
+ * Location extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @copyright   Copyright (c) 2013 Andrew Kett. (http://www.andrewkett.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+
+<?php
+  $locations = $this->getLocations()->getItems();
+  $closest = $this->getLocations()->getFirstItem();
+?>
+
+
+<?php if($locations): ?>
+    <h2>Closest Store</h2>
+    <div class="closest loc-ls-item">
+        <article itemscope itemtype="http://schema.org/Place" class="loc loc-teaser loc-closest" data-id="<?php echo $closest->getId(); ?>">
+            <h3 itemprop="name"><?php echo $closest->getTitle(); ?></h3>
+            <address itemprop="address"><?php echo $closest->getAddress() ?></address>
+            <p>Approx <?php echo round($closest->getDistance(),1); ?>km from you</p>
+            <a itemprop="url" href="<?php echo $closest->getUrl(); ?>">View More</a> | <a href="<?php echo $closest->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+            <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                <meta itemprop="latitude" content="<?php echo $closest->getLatitude(); ?>" />
+                <meta itemprop="longitude" content="<?php echo $closest->getLongitude(); ?>" />
+            </div>
+        </article>
+    </div>
+    <br />
+
+    <?php if(count($locations) > 1): ?>
+
+    <h2>Others</h2>
+    <ul class="locations">
+        <?php
+            $i = 0;
+            foreach($locations as $location):
+                $i++;
+                if($i==1){
+                    continue;
+                }
+        ?>
+        <li class="loc-ls-item">
+            <article itemscope itemtype="http://data-vocabulary.org/Place" class="loc loc-teaser" data-id="<?php echo $location->getId(); ?>">
+                <h3 itemprop="name"><?php echo $location->getTitle(); ?></h3>
+                <address itemprop="address"><?php echo $location->getAddress() ?></address>
+                <p>Approx <?php echo round($location->getDistance(),1); ?>km from you</p>
+                <a itemprop="url" href="<?php echo $location->getUrl(); ?>">View More</a> | <a href="<?php echo $location->getDirectionsLink(); ?>" target="_blank">Get Directions</a>
+                <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                    <meta itemprop="latitude" content="<?php echo $location->getLatitude(); ?>" />
+                    <meta itemprop="longitude" content="<?php echo $location->getLongitude(); ?>" />
+                </div>
+            </article>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+<?php endif; ?>

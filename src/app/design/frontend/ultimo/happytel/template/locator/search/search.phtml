@@ -1,0 +1,27 @@
+<div class="page-title">
+	<h1><?php echo $this->__('Store locator') ?></h1>
+</div>
+<?php echo $this->getChildHtml('form'); ?>
+<div class="loc-srch-res">
+	<div class="wrap-loc-list">
+		<div class="loc-srch-res-list">
+			<?php echo $this->getChildHtml('list') ?>
+		</div>
+		<?php $total = $this->getTotal() ?>
+		<a href="javascript:void(0);" id="loadmore" class="loc-loadmore" ><?php echo $this->__('Load more stores near me') ?></a>
+		<img src="<?php echo $this->getSkinUrl('locator/images/loader/loader-med.gif') ?>" id="loading_img" style="display:none;"/>
+		<input type="hidden" id="loc_total" value="<?php echo $total ?>"/>
+		<script type="text/javascript">
+			if(!jQuery('.loc-srch-res-list').find('article.loc-teaser').length || jQuery('.loc-srch-res-list').find('article.loc-teaser').length >= jQuery('#loc_total').val()) {
+				jQuery('#loadmore').hide();
+			}
+		</script>
+	</div>
+    <div class="loc-srch-res-map-wrap">
+        <div class="loc-map loc-srch-res-map"></div>
+    </div>
+
+    <div class="loc-srch-res-noresults"><?php echo $this->getChildHtml('empty') ?></div>
+</div>
+
+

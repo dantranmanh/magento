@@ -1,0 +1,1 @@
+alert(jQuery('.registered-users-content').height());

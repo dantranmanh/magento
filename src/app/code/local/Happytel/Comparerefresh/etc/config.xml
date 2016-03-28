@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happytel_Comparerefresh>
+            <version>0.1.0</version>
+        </Happytel_Comparerefresh>
+    </modules>
+    <global>
+        <models>
+            <happytel_comparerefresh>
+                <class>Happytel_Comparerefresh_Model</class>
+            </happytel_comparerefresh>
+        </models>
+        <events>
+            <catalog_product_compare_add_product>
+                <observers>
+                    <comparerefresh>
+                        <type>singleton</type>
+                        <class>happytel_comparerefresh/observer</class>
+                        <method>comparerefreshfullpagecache</method>
+                    </comparerefresh>
+                </observers>
+            </catalog_product_compare_add_product>
+        </events>
+    </global>
+</config>

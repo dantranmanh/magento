@@ -1,0 +1,2 @@
+<?php echo $this->htmlEscape($this->getMethod()->getTitle()); ?><br />
+<?php echo Mage::helper('commWeb')->__('Transaction ID: %s', $this->htmlEscape($this->getInfo()->getLastTransId())); ?><br />

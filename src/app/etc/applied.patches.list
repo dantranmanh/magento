@@ -1,0 +1,7 @@
+2016-03-03 07:23:08 UTC | SUPEE-7405 | EE_1.14.2.2 | v1.1 | 483b8e0f2bee6a24f63206110230d10167284cc9 | Fri Feb 5 12:29:34 2016 +0200 | 91465c744a824111902e2911fd63fd8cb6c32f05..483b8e0f2bee6a24f63206110230d10167284cc9
+patching file app/code/core/Mage/Adminhtml/Helper/Sales.php
+patching file app/code/core/Mage/Core/Model/Config.php
+patching file app/code/core/Mage/Sales/Model/Quote/Item.php
+patching file lib/Varien/File/Uploader.php
+
+

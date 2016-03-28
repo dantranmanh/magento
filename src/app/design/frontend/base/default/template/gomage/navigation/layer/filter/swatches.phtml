@@ -1,0 +1,74 @@
+<?php
+/**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2015 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 4.9
+ * @since        Class available since Release 4.7
+ */
+?>
+<?php
+/**
+ * Template for filter items block
+ *
+ * @see Mage_Catalog_Block_Layer_Filter
+ */
+
+$_dimHelper         = Mage::helper('configurableswatches/swatchdimensions');
+$_swatchInnerWidth  = $_dimHelper->getInnerWidth(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LAYER);
+$_swatchInnerHeight = $_dimHelper->getInnerHeight(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LAYER);
+$_swatchOuterWidth  = $_dimHelper->getOuterWidth(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LAYER);
+$_swatchOuterHeight = $_dimHelper->getOuterHeight(Mage_ConfigurableSwatches_Helper_Swatchdimensions::AREA_LAYER);
+?>
+
+<ol class="configurable-swatch-list">
+    <?php foreach ($this->getItems() as $_item): ?>
+        <?php
+        $_hasItems      = ($_item->getCount() > 0);
+        $_label         = $_item->getLabel();
+        $_swatchUrl     = Mage::helper('configurableswatches/productimg')->getGlobalSwatchUrl($_item, $_label, $_swatchInnerWidth, $_swatchInnerHeight);
+        $_hasImage      = (!empty($_swatchUrl));
+        $_linkClass     = 'swatch-link' . (($_hasImage) ? ' has-image' : '');
+        $_linkClass     = ($_item->getActive()) ? $_linkClass .= ' active ' : $_linkClass;
+        $_linkCss       = 'height:' . $_swatchOuterHeight . 'px; ' . ((!$_hasImage) ? 'min-' : '') . 'width:' . $_swatchOuterWidth . 'px;';
+        $_lineHeight    = $_swatchOuterHeight + 2;
+        $_labelClass    = 'swatch-label';
+        $_labelClass    = ($_item->getActive()) ? $_labelClass .= ' swatch-active ' : $_labelClass;
+        ?>
+        <?php if ($_hasImage): ?>
+        <li<?php if ($_hasImage){ echo ' style="line-height: ' . $_lineHeight . 'px;"'; } ?>>
+            <?php if ($_hasItems): ?>
+                <?php
+                    $data_param = $_item->getActive() ? $_item->getRemoveUrlParams() : $_item->getUrlParams(false);
+                    
+                    if ($this->ajaxEnabled()) {
+                        $data_param = $data_param;
+                    }
+                ?>
+                <a data-ajax="<?php echo ($this->ajaxEnabled()) ? 1 : 0 ;?>" data-param="<?php echo $data_param; ?>" data-url="<?php echo $_item->getCleanUrl(false); ?>" title="<?php echo $_item->getLabel() ?>" onclick="GomageNavigation.click(this); return false;" href="<?php echo $_item->getCleanUrl(true) . $data_param; ?>" class="<?php echo $_linkClass ?>">
+            <?php else: ?>
+                <span class="<?php echo $_linkClass ?>">
+            <?php endif; ?>
+                <span class="<?php echo $_labelClass ?>" <?php if ($_hasImage){ echo 'style="' . $_linkCss . '"'; } ?>>
+                    <?php if ($_hasImage): ?>
+                        <img src="<?php echo $_swatchUrl; ?>" alt="<?php echo $_label; ?>" title="<?php echo $_label ?>" width="<?php echo $_swatchInnerWidth ?>" height="<?php echo $_swatchInnerHeight ?>" />
+                    <?php else: ?>
+                        <?php echo $_label; ?>
+                    <?php endif; ?>
+                </span>
+                <?php if (Mage::getStoreConfigFlag('gomage_navigation/filter_settings/values_qty') == 1) : ?>
+                    <span class="count">(<?php echo $_item->getCount() ?>)</span>
+                <?php endif; ?>
+            <?php if ($_hasItems): ?>
+                </a>
+            <?php else: ?>
+                </span>
+            <?php endif; ?>
+        </li>
+        <?php endif; ?>
+    <?php endforeach ?>
+</ol>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Balance_Setup>
+            <version>0.1.0</version>
+        </Balance_Setup>
+    </modules>
+    <global>
+        <resources>
+            <balance_setup>
+                <setup>
+                    <module>Balance_Setup</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </balance_setup>
+        </resources>
+    </global>
+</config>

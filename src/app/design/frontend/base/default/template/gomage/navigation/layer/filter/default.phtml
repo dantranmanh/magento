@@ -1,0 +1,58 @@
+<?php
+ /**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2015 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 4.9
+ * @since        Class available since Release 2.0
+ */
+?>
+<ol class="image-align-<?php echo $this->getImageAlign();?> <?php if($this->canShowCheckbox()):?>gan-list-checkbox<?php endif;?> <?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK):?>gan-inblock-list<?php endif;?>" 
+	<?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK 
+			&& $this->getInblockType()==GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Type_Inblock::TYPE_FIXED):?>style="height:<?php echo $this->getInBlockHeight(); ?>px;"<?php endif;?>
+			
+	<?php if($this->getFilterType()==GoMage_Navigation_Model_Catalog_Layer::FILTER_TYPE_DEFAULT_INBLOCK 
+			&& $this->getInblockType()==GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Type_Inblock::TYPE_AUTO):?>style="max-height:<?php echo $this->getMaxInBlockHeight(); ?>px;"<?php endif; ?>
+		>
+<?php 
+	$show_all = (bool)$this->getShowAllOptions();
+	$visible_options = intval($this->getVisibleOptions());
+	$i = 0; 	
+?>
+<?php foreach ($this->getItems() as $_item): ?>
+	<?php $i++; ?>
+    <li <?php if (($visible_options && $i > $visible_options && !$show_all) || (!$_item->getCount() && $this->getFilter()->getRequestVarValue() != 'stock_status' && $this->getFilter()->getRequestVarValue() != 'price')): ?>style="display:none;"<?php endif; ?>>
+        <?php if ( ( ($_item->getActive() || $this->isActiveFilter($_item->getLabel())) && Mage::getStoreConfig('gomage_navigation/filter_settings/applied_values') != GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Appliedvalues::REMOVE) 
+        			|| !$_item->getActive() ): ?>
+           <?php
+                $stock = ($this->getFilter()->getRequestVarValue() == 'stock_status');
+                $data_param = ($_item->getActive() || $this->isActiveFilter($_item->getLabel())) ? $_item->getRemoveUrlParams() : $_item->getUrlParams($stock);
+
+                if($this->ajaxEnabled()){
+                    $data_param = $data_param;
+                }
+            ?>
+            <a data-ajax="<?php echo ($this->ajaxEnabled()) ? 1 : 0 ;?>" data-param="<?php echo $data_param; ?>" data-url="<?php echo $_item->getCleanUrl(true); ?>" <?php if($_item->getActive() || $this->isActiveFilter($_item->getLabel())):?> class="active" <?php endif;?> onclick="GomageNavigation.click(this); return false;" href="<?php echo $_item->getCleanUrl(true) . $data_param; ?>">
+                <?php echo $_item->getLabel() ?>
+                <?php if(!$_item->getActive() && !$this->isActiveFilter($_item->getLabel())):?>
+                    <?php if ( Mage::getStoreConfigFlag('gomage_navigation/filter_settings/values_qty') == 1 ):?>
+                        <span class="count">(<?php echo $_item->getCount() ?>)</span>
+                    <?php endif;?>
+                <?php endif;?>
+            </a>
+        <?php endif; ?>
+    </li>    
+<?php endforeach ?>
+<?php if ($visible_options && $i > $visible_options): ?>
+	<li <?php if ($show_all): ?>style="display:none;"<?php endif; ?> >
+		<a class="gan-attr-more" onclick="GomageNavigation.showAllNavigationAttribute(this, '<?php echo $this->_filter->getRequestVar(); ?>')" href="javascript:void(0)"><?php echo Mage::helper('gomage_navigation')->getMore();?></a>
+	</li>
+	<li <?php if (!$show_all): ?>style="display:none;"<?php endif; ?> >
+		<a class="gan-attr-less" onclick="GomageNavigation.hideNavigationAttribute(this, <?php echo $visible_options; ?>, '<?php echo $this->_filter->getRequestVar(); ?>')" href="javascript:void(0)"><?php echo Mage::helper('gomage_navigation')->getLess();?></a>
+	</li>
+<?php endif; ?>
+</ol>

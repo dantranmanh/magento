@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <korifi translate="label" module="kbase">
+            <label>JET</label>
+            <sort_order>1</sort_order>
+        </korifi>
+    </tabs>
+    <sections>
+        <kstore>
+            <label><![CDATA[Extensions Store]]></label>
+            <tab>korifi</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>910</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <extensions translate="label">
+                    <label>JET Extensions Store</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>kbase/store</frontend_model>
+                    <sort_order>999</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </extensions>
+            </groups>
+        </kstore>    
+        <kbase translate="label" module="kbase">
+            <label><![CDATA[Information]]></label>
+            <tab>korifi</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>900</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <extensions translate="label">
+                    <label>Installed JET Extensions</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>kbase/extensions</frontend_model>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </extensions>
+                <feed>
+                    <label>Notifications</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>90</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <update translate="label">
+                            <label>I`d like to be informed by JET Updates about</label>
+                            <comment><![CDATA[]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </update>
+                        <promo translate="label">
+                            <label>I`d like to be informed by JET Promotions/Discounts about</label>
+                            <comment><![CDATA[]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </promo>
+                    </fields>
+                </feed>
+            </groups>
+        </kbase>
+    </sections>
+</config>

@@ -1,0 +1,168 @@
+<?php
+ /**
+ * GoMage Advanced Navigation Extension
+ *
+ * @category     Extension
+ * @copyright    Copyright (c) 2010-2015 GoMage (http://www.gomage.com)
+ * @author       GoMage
+ * @license      http://www.gomage.com/license-agreement/  Single domain license
+ * @terms of use http://www.gomage.com/terms-of-use
+ * @version      Release: 4.9
+ * @since        Class available since Release 1.0
+ */
+?>
+<?php if ($this->canShowBlock()) : ?>
+	<?php
+		$check = $this->getPosition();
+		
+		if ($check == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Attributelocation::CONTENT) {
+			$content_area = true;
+		} else {
+			$content_area = false;	 
+		}
+		
+		$gan_bcontent_hide = 'true' === $this->getRequest()->getParam('gan_bcontent_hide'); 
+    ?>
+    <?php if ($this->canShowLayeredBlock($check)) : ?>
+		<?php
+			$enterprise_class = '';
+			
+			if ($check == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Attributelocation::CONTENT && Mage::helper('gomage_navigation')->isEnterprise()) {
+				$enterprise_class = 'sidebar-enterprise-block-layered-nav';
+			}
+        ?>
+<div id="block-layered-nav-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>" class="block <?php echo $enterprise_class; ?> block-layered-nav block-layered-nav-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?> gomage-navigation-slider-type-<?php echo $this->getSliderType();?> gomage-navigation-icons-<?php echo $this->getIconStyle();?><?php if ($content_area): ?> gan-content-area<?php endif; ?>">
+    <div class="block-title">
+        <strong>
+        	<span><?php echo $this->__('Shop By') ?></span>
+        	<?php if ($content_area): ?>
+        		<a href="javascript:void(0);" onclick="GomageNavigation.ganSHBlockContent(this);" class="gan-hide-link"><?php if ($content_area && $gan_bcontent_hide): ?><?php echo $this->__('Show') ?><?php else: ?><?php echo $this->__('Hide') ?><?php endif; ?></a>
+        	<?php endif; ?>
+        </strong>
+    </div>
+    <div class="block-content<?php if ($content_area && $gan_bcontent_hide): ?> gan-hidden<?php endif; ?>" id="gan-block-content-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>" <?php if ($content_area && $gan_bcontent_hide): ?>style="display:none;"<?php endif; ?> >
+	  	<?php 
+	  	if (Mage::getStoreConfig('gomage_navigation/filter_settings/applied_values') != GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Appliedvalues::NO) :
+	  	?>
+        	<?php $active_filters = $this->getActiveFilters(); ?>
+			<?php if (!empty($active_filters)) : ?>
+			<div class="currently">
+			    <p class="block-subtitle"><?php echo $this->__('Currently Shopping by:') ?></p>
+			    <ol>
+			    <?php foreach ($active_filters as $active_filter) : ?>
+			        <li>
+			            <span class="label"><?php echo $this->__($active_filter->getName()); ?>:</span> <span class="value"><?php echo $this->stripTags($active_filter->getLabel()); ?></span>
+			            <?php $remove_url = $active_filter->getRemoveUrl(); ?>
+			            <?php if (!Mage::helper('gomage_navigation')->isGoMageSeoBoosterEnabled()) : ?>
+			                <a <?php if ($active_filter->getAjaxEnabled()): ?> onclick="GomageNavigation.setNavigationUrl('<?php echo $remove_url; ?>'); return false;" <?php endif; ?> class="btn-remove" title="<?php echo $this->escapeHtml($active_filter->getFilter()->getClearLinkText()); ?>" href="<?php echo $remove_url; ?>"><?php echo $this->escapeHtml($active_filter->getFilter()->getClearLinkText()); ?></a>
+			            <?php else : ?>
+			                <a <?php if ($active_filter->getAjaxEnabled() || ($active_filter->getFilter()->getRequestVarValue() == 'cat')) : ?> onclick="GomageNavigation.setNavigationUrl('<?php echo $active_filter->getRemoveUrl(); ?>'); return false;" <?php endif; ?> class="btn-remove" href="<?php echo $active_filter->getRemoveUrl(); ?>" title="<?php echo $this->__('Remove This Item'); ?>"><?php echo $this->__('Remove This Item'); ?></a>
+			            <?php endif; ?>
+			        </li>
+			    <?php endforeach; ?>
+			    </ol>
+			</div>
+			<?php endif; ?>		
+		<?php endif; ?>		
+  		
+        <?php if($this->canShowOptions()): ?>
+            <p class="block-subtitle">
+    			<span><?php echo $this->__('Shop By') ?></span>
+    			<?php if(count($this->getActiveFilters()) > 0):?>
+    				<?php if (Mage::helper('gomage_navigation')->isGomageNavigationClearAjax()): ?>
+
+    					<button class="button" onclick="GomageNavigation.setNavigationUrl('<?php echo $this->getClearUrl(true); ?>'); return false;"><span><span><?php echo Mage::helper('gomage_navigation')->getClearAll(); ?></span></span></button>
+    				<?php else: ?>
+    					<button class="button" onclick="setLocation('<?php echo $this->getClearUrl();?>')"><span><span><?php echo Mage::helper('gomage_navigation')->getClearAll(); ?></span></span></button>
+    				<?php endif; ?>	
+    			
+    			<?php endif;?>
+    		</p>
+            <div id="narrow-by-list-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>" class="narrow-by-list filter-align-<?php echo Mage::getStoreConfig('gomage_navigation/general/content_filters'); ?>">
+                <?php 
+					$filters_blocks	= $this->getFilters();			
+					$filter_width	= $this->getFiltersWidth($check);
+				?>
+				<?php foreach ($filters_blocks as $filter_block) : ?>
+					<?php
+						$category = Mage::registry("current_category");
+							
+						if ($category && in_array($category->getId(), explode(",", $filter_block->getCategoryIdsFilter()))) {
+							continue;
+						}
+							  
+						$filter_id = 'advancednavigation-filter-content-' . $filter_block->_filter->getRequestVar();                	
+                    ?>			
+					<?php 
+					if ($filter_block->getItemsCount() 
+						&& ($filter_block->getAttributeLocation() == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Filter_Attributelocation::USE_GLOBAL || $filter_block->getAttributeLocation() == $check)
+					) :
+					?>
+						<?php if (Mage::helper('gomage_navigation')->getFilterItemCount($filter_block)) : ?>
+							<?php if ($filter_block->canShowPopup()) : ?>	                    
+                                <?php $note_content = trim($filter_block->getPopupText()); ?>	                        
+                                <?php if (strlen($note_content)) : ?>
+                                    <?php	    	                    		
+                                        $styles = '';	    	                    		
+                                        
+                                        if ($content_width = $filter_block->getPopupWidth()) {	    	                    			
+                                            $styles .= "width:{$content_width}px;";	    	                    			
+                                        }
+                                        
+                                        if ($content_height = $filter_block->getPopupHeight()) {	    	                    			
+                                            $styles .= "height:{$content_height}px;";	    	                    			
+                                        }	    	                    		
+                                    ?>	    	                    						
+                                    <div id="filter-<?php echo $filter_block->getPopupId();?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>-note-content" class="filter-note-content"
+                                    <?php if (Mage::getStoreConfig('gomage_navigation/filter/hide_help') == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Style_Hidehelp::MOUSE_OUT ) : ?> 
+                                        onmouseout="setTimeout('GomageNavigation.hideNavigationNote(false, false)',200);"
+                                    <?php endif; ?>>
+                                        <div class="filter-note-content-in" onmouseover="GomageNavigation.mouseStatus(true);" onmouseout="GomageNavigation.mouseStatus(false);"
+                                        <?php if ($styles) : ?> 
+                                            style="<?php echo $styles; ?>" 
+                                        <?php endif; ?>>
+                                        <?php if (Mage::getStoreConfig('gomage_navigation/filter/hide_help') == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Style_Hidehelp::CLOSE_BUTTON ) : ?> 
+                                            <div class="gomage-help-close" onclick="GomageNavigation.hideNavigationNote(true, 'filter-<?php echo $filter_block->getPopupId(); ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>-note-content', this, '<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>');">&#x2715;</div>
+                                        <?php endif; ?>
+                                        <?php echo nl2br($note_content);?>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                            <?php endif;?>
+							<dl class="gan-attribute" <?php if ($content_area && Mage::getStoreConfig('gomage_navigation/general/content_filters') == 'columns' ) : ?>style="width: <?php echo $filter_width; ?>" <?php endif; ?>>	                    	                	            	
+                                <dt onclick="GomageNavigation.navigationOpenFilter('<?php echo $filter_block->_filter->getRequestVar(); ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>');" id="<?php echo $filter_id; ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>-title" class="<?php echo ($filter_block->canShowMinimized(Mage::helper('gomage_navigation')->getSide($check))) ? "filter-content-hide" : "filter-content-show"; ?>">
+                                    <span class="filter-name"><?php echo $this->__($filter_block->getName()); ?></span>
+                                    <?php if ($filter_block->canShowPopup()) : ?>
+                                        <?php if (strlen($note_content)) :?>
+                                            <?php if(Mage::getStoreConfig('gomage_navigation/filter/show_help') == GoMage_Navigation_Model_Adminhtml_System_Config_Source_Style_Showhelp::MOUSE_OVER ) : ?>
+                                                <span class="filter-note-handle" onmouseover="GomageNavigation.showNavigationNote('filter-<?php echo $filter_block->getPopupId(); ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>-note-content', this, '<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>'); GomageNavigation.mouseStatus(true);setTimeout('GomageNavigation.mouseStatus(false)',500);">?</span>
+                                            <?php else : ?> 
+                                                <span class="filter-note-handle" onclick="GomageNavigation.showNavigationNote('filter-<?php echo $filter_block->getPopupId(); ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>-note-content', this, '<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>')">?</span>
+                                            <?php endif; ?>
+                                        <?php endif; ?>                       
+                                    <?php endif;?>
+                                </dt>				
+                                <dd id="<?php echo $filter_id; ?>-<?php echo Mage::helper('gomage_navigation')->getSide($check); ?>" <?php if($filter_block->canShowMinimized(Mage::helper('gomage_navigation')->getSide($check))) : ?> style="display:none;" <?php endif; ?>>
+                                    <?php if ($filter_block->canShowResetFirler()) : ?>
+                                        <?php 
+                                            $reset = $this->getClearLinkUrl($filter_block);
+                                        ?>
+                                        <?php if ($reset) : ?>
+                                            <a href="<?php echo $reset; ?>" <?php if ($filter_block->ajaxEnabled()) : ?>onclick="GomageNavigation.setNavigationUrl('<?php echo $reset; ?>'); return false;"<?php endif; ?>>Reset</a>
+                                        <?php endif; ?>
+                                    <?php endif; ?>			
+                                    <?php 
+                                        $filter_block->setData('side', Mage::helper('gomage_navigation')->getSide($check));
+                                        echo $filter_block->getHtml();
+                                    ?>					
+                                </dd>
+							</dl>
+						<?php endif; ?>
+					<?php endif; ?>
+				<?php endforeach; ?>
+            </div>            
+        <?php endif; ?>
+    </div>
+</div>
+	<?php endif; ?>
+<?php endif; ?>

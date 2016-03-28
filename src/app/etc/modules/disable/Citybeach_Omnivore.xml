@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Citybeach_Omnivore>
+            <active>true</active>
+            <codePool>community</codePool>
+            <!--<depends>-->
+                <!--<Mage_adminhtml />-->
+            <!--</depends>-->
+        </Citybeach_Omnivore>
+    </modules>
+</config>

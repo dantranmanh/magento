@@ -1,0 +1,46 @@
+# magento db config #
+####################
+app/etc/local.xml
+./index.php
+.htaccess
+
+# magento folder #
+#####################
+media/*
+downloader/*
+var/*
+!var/.htaccess
+
+# wordpress #
+#############
+blog/wp-content/uploads/*
+blog/wp-config.php
+wp/wp-content/uploads/*
+wp/wp-config.php
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# eclipse file #
+##############
+.buildpath
+.project
+.setting/*
+
+/nbproject/*
+
+# PHP Storm #
+#############
+
+.idea
+.idea/*
+
+# Ultimo config file #
+######################
+
+skin/frontend/ultimo/default/css/_config
+skin/frontend/ultimo/default/css/_config/*

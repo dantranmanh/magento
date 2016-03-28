@@ -1,0 +1,133 @@
+<?php
+/**
+ * Location extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @copyright   Copyright (c) 2013 Andrew Kett. (http://www.andrewkett.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+
+<?php
+$loc = $this->getLocations()->getFirstItem();
+?>
+
+<div class="myhouse">
+	 <h2><?php echo $this->__('your nearest store') ?></h2>
+    <div class="address">
+		<h3><?php echo $this->__('Address') ?></h3>
+        <address itemprop="address">
+			<?php
+			if($loc->getData('locality'))
+				echo $loc->getData('dependent_locality');
+			?>
+			<br/>
+			<?php
+				if($loc->getData('locality'))
+					echo $loc->getData('locality');
+			?>,
+			<br/>
+			<?php
+				if($loc->getAddress())
+					echo $loc->getAddress();
+			?>,
+			<br/>
+			<?php
+				if($loc->getData('sub_administrative_area'))
+					echo $loc->getData('sub_administrative_area');
+				if($loc->getData('premise'))
+					echo " " . $loc->getData('premise');
+				if($loc->getData('postal_code'))
+					echo " " . $loc->getData('postal_code');
+			?>
+			<br/>
+			<?php
+				if($loc->getData('phone'))
+					echo "Tel: ".$loc->getData('phone');
+			?>
+
+            <?php
+            if($loc->getData('email'))
+                echo "Email: ".$loc->getData('email');
+            ?>
+		</address>
+    </div>
+	<div class="action">
+		<a href="<?php echo $loc->getDirectionsLink(); ?>" target="_blank" class="loc-loadmore"><?php echo $this->__('Get Directions') ?></a>
+	</div>
+    <div class="opening">
+        <h3><?php echo $this->__('Trading Hours') ?></h3>
+        <div class="hours">
+            <ul>
+                <?php if($loc->monday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Monday') ?></p>
+                        <p class="hour-right"><?php echo $loc->monday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->tuesday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Tuesday') ?></p>
+                        <p class="hour-right"><?php echo $loc->tuesday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->wednesday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Wednesday') ?></p>
+                        <p class="hour-right"><?php echo $loc->wednesday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->thursday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Thursday') ?></p>
+                        <p class="hour-right"><?php echo $loc->thursday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->friday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Friday') ?></p>
+                        <p class="hour-right"><?php echo $loc->friday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->saturday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Saturday') ?></p>
+                        <p class="hour-right"><?php echo $loc->saturday ?></p>
+                    </li>
+                <?php endif; ?>
+                <?php if($loc->sunday): ?>
+                    <li>
+                        <p class="hour-left"><?php echo $this->__('Sunday') ?></p>
+                        <p class="hour-right"><?php echo $loc->sunday ?></p>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+	
+	<?php if($loc->description): ?>
+		<div class="description">
+			<h3><?php echo $this->__('Description') ?></h3>
+			<div class="description-content">
+				<?php echo $loc->description; ?>
+			</div>
+		</div>
+	<?php endif; ?>
+	
+	<?php if($loc->image): ?>
+		<div class="image">
+			<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'locator/location/'.$loc->image; ?>" alt="image" />
+		</div>
+	<?php endif; ?>
+
+	<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+		<meta itemprop="latitude" content="<?php echo $loc->getLatitude(); ?>" />
+		<meta itemprop="longitude" content="<?php echo $loc->getLongitude(); ?>" />
+	</div>
+</div>

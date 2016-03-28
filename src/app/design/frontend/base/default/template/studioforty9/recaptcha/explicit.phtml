@@ -1,0 +1,35 @@
+<?php
+/**
+ * Studioforty9_Recaptcha
+ *
+ * @category  Studioforty9
+ * @package   Studioforty9_Recaptcha
+ * @author    StudioForty9 <info@studioforty9.com>
+ * @copyright 2015 StudioForty9 (http://www.studioforty9.com)
+ * @license   https://github.com/studioforty9/recaptcha/blob/master/LICENCE BSD
+ * @version   1.2.0
+ * @link      https://github.com/studioforty9/recaptcha
+ * @see       Studioforty9_Recaptcha_Block_Explicit
+ */
+?>
+<?php if ($this->isAllowed($this->getRequest()->getRouteName())): ?>
+<div class="recaptcha" style="overflow:hidden;position:relative;">
+    <input type="checkbox" id="recaptcha-verification-1" name="recaptcha-verification-1" value="" class="hide required-entry" style="visibility:hidden;position:absolute;left:-1000000px" />
+    <div id="recaptcha-1"></div>
+    <script type="text/javascript">
+        var onloadCallback = function() {
+            grecaptcha.render('recaptcha-1', {
+                'sitekey': "<?php echo $this->getSiteKey(); ?>",
+                'theme': "<?php echo $this->getTheme(); ?>",
+                'callback': function(response) {
+                    if (response.length > 0) {
+                        $('recaptcha-verification-1').writeAttribute('value', 'checked');
+                        $('recaptcha-verification-1').checked = true;
+                    }
+                }
+            });
+        };
+    </script>
+    <?php echo $this->getRecaptchaScript(); ?>
+</div>
+<?php endif; ?>

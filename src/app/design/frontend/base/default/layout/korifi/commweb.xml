@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <commweb_hosted_placement>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="content">
+            <block type="commWeb/hosted_placement" name="commweb_placement" template="korifi/commweb/placement.phtml"/>
+        </reference>
+    </commweb_hosted_placement>
+</layout>

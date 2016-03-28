@@ -1,0 +1,22 @@
+<?php
+$formData = $this->getFormData();
+//print_r($formData); die('test');
+?>
+<p><strong><?php echo Mage::helper('commWeb')->__('You will be redirected to the payment gateway in a few seconds.'); ?></strong></p>
+<form name="commweb" id="commweb_review_form" action="<?php echo $this->getFormAction();?>" method="post" accept-charset="UTF-8">
+  <?php if (is_array($formData)): ?>
+    <fieldset>
+      <?php foreach ($formData as $name => $value) { ?>
+        <input type="hidden" name="<?php echo($name); ?>" value="<?php echo($value); ?>" />
+      <?php } ?>
+    </fieldset>
+  <?php endif; ?>
+</form>
+<script type="text/javascript">
+    //<![CDATA[
+    var review = new VarienForm('commweb_review_form', '');
+    Event.observe(window, 'load', function() {
+        review.submit();
+    });
+    //]]>
+</script>

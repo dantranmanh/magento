@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Balance_Setup>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Balance_Setup>
+    </modules>
+</config>
