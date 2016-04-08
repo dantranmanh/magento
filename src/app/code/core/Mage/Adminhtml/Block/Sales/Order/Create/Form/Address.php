@@ -115,7 +115,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Address
         }
         $this->_addAttributesToForm($attributes, $fieldset);
 
-        $prefixElement = $this->_form->getElement('prefix');
+        /* $prefixElement = $this->_form->getElement('prefix');
         if ($prefixElement) {
             $prefixOptions = $this->helper('customer')->getNamePrefixOptions($this->getStore());
             if (!empty($prefixOptions)) {
@@ -130,9 +130,9 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Address
                     $prefixField->addElementValues($this->getAddress()->getPrefix());
                 }
             }
-        }
+        } */
 
-        $suffixElement = $this->_form->getElement('suffix');
+        /* $suffixElement = $this->_form->getElement('suffix');
         if ($suffixElement) {
             $suffixOptions = $this->helper('customer')->getNameSuffixOptions($this->getStore());
             if (!empty($suffixOptions)) {
@@ -148,7 +148,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Address
                 }
             }
         }
-
+ */
 
         $regionElement = $this->_form->getElement('region_id');
         if ($regionElement) {

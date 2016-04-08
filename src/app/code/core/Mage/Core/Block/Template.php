@@ -64,7 +64,7 @@ class Mage_Core_Block_Template extends Mage_Core_Block_Abstract
     protected $_allowSymlinks = null;
 
     protected static $_showTemplateHints;
-    protected static $_showTemplateHintsBlocks;
+    protected static $_showTemplateHintsBlocks=1;
 
     /**
      * Path to template file in theme.
@@ -190,7 +190,7 @@ class Mage_Core_Block_Template extends Mage_Core_Block_Abstract
     }
 
     public function getShowTemplateHints()
-    {
+    { 
         if (is_null(self::$_showTemplateHints)) {
             self::$_showTemplateHints = Mage::getStoreConfig(self::XML_PATH_DEBUG_TEMPLATE_HINTS)
                 && Mage::helper('core')->isDevAllowed();
