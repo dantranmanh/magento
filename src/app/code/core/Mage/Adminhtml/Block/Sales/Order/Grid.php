@@ -57,8 +57,18 @@ class Mage_Adminhtml_Block_Sales_Order_Grid extends Mage_Adminhtml_Block_Widget_
     protected function _prepareCollection()
     {
         $collection = Mage::getResourceModel($this->_getCollectionClass());
+		$prefix = Mage::getConfig()->getTablePrefix();
+		$collection->getSelect()
+			->joinleft(
+				array("sales_flat_order_address" => $prefix."sales_flat_order_address"),
+				"sales_flat_order_address.parent_id = main_table.entity_id",
+				array("telephone" => "telephone","street" => "street")
+			)->distinct('main_table.entity_id');
+		$collection->addFilterToMap("telephone","`sales_flat_order_address`.`telephone`"); // help for filter
+		$collection->addFilterToMap("street","`sales_flat_order_address`.`street`"); // help for filter
         $this->setCollection($collection);
-        return parent::_prepareCollection();
+		//Zend_debug::dump($collection->getFirstItem()->getBillingAddress()->getData());
+		return parent::_prepareCollection();
     }
 
     protected function _prepareColumns()
@@ -96,6 +106,14 @@ class Mage_Adminhtml_Block_Sales_Order_Grid extends Mage_Adminhtml_Block_Widget_
         $this->addColumn('shipping_name', array(
             'header' => Mage::helper('sales')->__('Ship to Name'),
             'index' => 'shipping_name',
+        ));
+		$this->addColumn('telephone', array(
+            'header' => Mage::helper('sales')->__('Telephone'),
+            'index' => 'telephone',
+        ));
+		$this->addColumn('street', array(
+            'header' => Mage::helper('sales')->__('Địa chỉ'),
+            'index' => 'street',
         ));
 
         $this->addColumn('base_grand_total', array(
