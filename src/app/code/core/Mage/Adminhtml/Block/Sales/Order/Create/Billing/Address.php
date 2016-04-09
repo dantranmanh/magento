@@ -83,7 +83,7 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Billing_Address
 		$data['city']="Hà Nội";
 		$data['region']="Thanh Trì";
 		$data['postcode']="100000";
-        return $this->getCreateOrderModel()->getBillingAddress()->getData();
+        return $data;
     }
 
     /**
