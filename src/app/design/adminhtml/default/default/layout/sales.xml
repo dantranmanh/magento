@@ -555,16 +555,16 @@
                         </block>
                         <block type="adminhtml/sales_order_create_items" template="sales/order/create/items.phtml" name="items">
                             <block type="adminhtml/sales_order_create_items_grid" template="sales/order/create/items/grid.phtml" name="items_grid">
-                                <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
+                                <!-- <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
                                     <block type="adminhtml/sales_order_create_coupons_form" template="sales/order/create/coupons/form.phtml" name="form" />
-                                </block>
+                                </block> -->
                             </block>
                         </block>
                         <block type="adminhtml/sales_order_create_comment" template="sales/order/create/comment.phtml" name="comment" />
                         <block type="adminhtml/sales_order_create_totals" template="sales/order/create/totals.phtml" name="totals" />
-                        <block type="adminhtml/template" name="gift_options" template="sales/order/giftoptions.phtml">
+                        <!-- <block type="adminhtml/template" name="gift_options" template="sales/order/giftoptions.phtml">
                             <block type="adminhtml/sales_order_create_giftmessage" template="sales/order/create/giftmessage.phtml" name="giftmessage" />
-                        </block>
+                        </block> -->
                         <block type="core/text_list" name="order_item_extra_info"></block>
                     </block>
                 </block>
@@ -617,16 +617,16 @@
                 </block>
                 <block type="adminhtml/sales_order_create_items" template="sales/order/create/items.phtml" name="items">
                     <block type="adminhtml/sales_order_create_items_grid" template="sales/order/create/items/grid.phtml" name="items_grid">
-                        <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
+                        <!-- <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
                             <block type="adminhtml/sales_order_create_coupons_form" template="sales/order/create/coupons/form.phtml" name="form" />
-                        </block>
+                        </block> -->
                     </block>
                 </block>
                 <block type="adminhtml/sales_order_create_comment" template="sales/order/create/comment.phtml" name="comment" />
                 <block type="adminhtml/sales_order_create_totals" template="sales/order/create/totals.phtml" name="totals" />
-                <block type="adminhtml/template" name="gift_options" template="sales/order/giftoptions.phtml">
+                <!-- <block type="adminhtml/template" name="gift_options" template="sales/order/giftoptions.phtml">
                     <block type="adminhtml/sales_order_create_giftmessage" template="sales/order/create/giftmessage.phtml" name="giftmessage" />
-                </block>
+                </block> -->
                 <block type="core/text_list" name="order_item_extra_info"></block>
             </block>
         </reference>
@@ -713,9 +713,9 @@
         <reference name="content">
             <block type="adminhtml/sales_order_create_items" template="sales/order/create/items.phtml" name="items">
                 <block type="adminhtml/sales_order_create_items_grid" template="sales/order/create/items/grid.phtml" name="items_grid">
-                    <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
+                    <!-- <block type="adminhtml/sales_order_create_coupons" template="sales/order/create/coupons/form.phtml" name="coupons">
                         <block type="adminhtml/sales_order_create_coupons_form" template="sales/order/create/coupons/form.phtml" name="form" />
-                    </block>
+                    </block> -->
                 </block>
             </block>
             <block type="core/text_list" name="order_item_extra_info"></block>
@@ -734,11 +734,11 @@
         </reference>
     </adminhtml_sales_order_create_load_block_totals>
 
-    <adminhtml_sales_order_create_load_block_giftmessage>
+    <!-- <adminhtml_sales_order_create_load_block_giftmessage>
         <reference name="content">
             <block type="adminhtml/sales_order_create_giftmessage" template="sales/order/create/giftmessage.phtml" name="giftmessage" />
         </reference>
-    </adminhtml_sales_order_create_load_block_giftmessage>
+    </adminhtml_sales_order_create_load_block_giftmessage> -->
 
     <adminhtml_sales_order_create_load_block_message>
         <reference name="content">

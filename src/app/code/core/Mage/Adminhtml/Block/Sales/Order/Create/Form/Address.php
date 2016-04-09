@@ -218,4 +218,57 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Address
     {
         return $this->escapeHtml($address->format('oneline'));
     }
+	/**
+     * Add rendering EAV attributes to Form element
+     *
+     * @param array|Varien_Data_Collection $attributes
+     * @param Varien_Data_Form_Abstract $form
+     * @return Mage_Adminhtml_Block_Sales_Order_Create_Form_Abstract
+     */
+    protected function _addAttributesToForm($attributes, Varien_Data_Form_Abstract $form)
+    {
+		$disabled_attb=array('prefix','middlename','suffix','company','fax','vat_id');
+        // add additional form types
+        $types = $this->_getAdditionalFormElementTypes();
+        foreach ($types as $type => $className) {
+            $form->addType($type, $className);
+        }
+        $renderers = $this->_getAdditionalFormElementRenderers();
+
+        foreach ($attributes as $attribute) {
+			if(in_array($attribute->getData('attribute_code'),$disabled_attb)) continue;
+			//Zend_debug::dump($attribute->getData());
+            /** @var $attribute Mage_Customer_Model_Attribute */
+            $attribute->setStoreId(Mage::getSingleton('adminhtml/session_quote')->getStoreId());
+            $inputType = $attribute->getFrontend()->getInputType();
+
+            if ($inputType) {
+                $element = $form->addField($attribute->getAttributeCode(), $inputType, array(
+                    'name'      => $attribute->getAttributeCode(),
+                    'label'     => $this->__($attribute->getStoreLabel()),
+                    'class'     => $attribute->getFrontend()->getClass(),
+                    'required'  => $attribute->getIsRequired(),
+                ));
+                if ($inputType == 'multiline') {
+                    $element->setLineCount($attribute->getMultilineCount());
+                }
+                $element->setEntityAttribute($attribute);
+                $this->_addAdditionalFormElementData($element);
+
+                if (!empty($renderers[$attribute->getAttributeCode()])) {
+                    $element->setRenderer($renderers[$attribute->getAttributeCode()]);
+                }
+
+                if ($inputType == 'select' || $inputType == 'multiselect') {
+                    $element->setValues($attribute->getFrontend()->getSelectOptions());
+                } else if ($inputType == 'date') {
+                    $format = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+                    $element->setImage($this->getSkinUrl('images/grid-cal.gif'));
+                    $element->setFormat($format);
+                }
+            }
+        }
+
+        return $this;
+    }
 }
