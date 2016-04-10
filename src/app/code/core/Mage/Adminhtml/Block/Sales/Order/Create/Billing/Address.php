@@ -79,7 +79,11 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Billing_Address
      */
     public function getFormValues()
     {
-        return $this->getCreateOrderModel()->getBillingAddress()->getData();
+		$data=$this->getCreateOrderModel()->getBillingAddress()->getData();
+		$data['city']="Hà Nội";
+		$data['region']="Thanh Trì";
+		$data['postcode']="100000";
+        return $data;
     }
 
     /**
