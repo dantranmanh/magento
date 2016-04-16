@@ -143,7 +143,10 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Form_Account extends Mage_Adminhtm
         if ($this->getQuote()->getCustomerEmail()) {
             $data['email']  = $this->getQuote()->getCustomerEmail();
         }
-
+		if(empty($data['email'])) {
+			 $customers = Mage::getResourceModel('customer/customer_collection');			 
+			$data['email'] ="khach_hang_".(count($customers)+1)."@gmail.com";
+		}
         return $data;
     }
 }
