@@ -1,0 +1,58 @@
+# Magento config files #
+########################
+/src/app/etc/local.xml
+/src/magmi/conf/magmi.ini
+/src/skin/frontend/ultimo/default/css/_config
+/src/skin/frontend/enterprise/holler/config.rb
+/src/index-after.php
+/src/index-before.php
+
+# Magento folders #
+###################
+/src/media/
+/src/downloader/
+/src/vendor/
+/src/sitemap/
+/src/includes/
+/src/tmp/
+/src/var/
+/src/catalogue-import/
+
+# Magento kept files #
+######################
+!/src/includes/config.php
+!/src/includes/.htaccess
+!/src/media/.htaccess
+!/src/var/.htaccess
+
+# WordPress files & folders #
+#############################
+/src/blog/wp-config.php
+/src/blog/wp-content/uploads/
+/src/wp/wp-config.php
+/src/wp/wp-content/uploads/
+
+# OS generated files #
+######################
+.DS_Store
+Icon?
+ehthumbs.db
+Thumbs.db
+__MACOSX
+
+# User specified files #
+########################
+.buildpath
+.project
+.setting
+.phpintel
+.idea
+.modman
+.sass-cache
+nbproject
+._*
+~*
+*.phar
+*.swp
+*.original
+*.disabled
