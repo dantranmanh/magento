@@ -1,21 +1,11 @@
 <?php
-require_once '../abstract.php';
-
-/**
- * Magento Compiler Shell Script
- *
- * @category    Mage
- * @package     Mage_Shell
- * @author      Magento Core Team <core@magentocommerce.com>
- */
-class Mage_Shell_Compiler extends Mage_Shell_Abstract
+class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
 {
+	
     public $_categories=array();
-    public $_inputFile = 'input.csv';
-    public $_outputFile="output.csv";
+    public $_qty_map=array();
+    public $_inputFile = 'input.csv';   
     public $_productFile="product.csv";
-    public $_imgFile="image.csv";
-
     
     public $_match_csv_header=array();
     public $_current_configure_product=null;
@@ -24,12 +14,39 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
     public $_new_attributes=array();
     public $_new_attributes_value=array();
 
+    public  function setInputFile($filename){
+		$this->_inputFile=$filename;
+	}	
+	public  function setProductFile($filename){
+		$this->_productFile=$filename;
+	}
+	public function getImportDirectory(){
+		return Mage::helper('nhapsanpham')->_getUploadFolder().DS;
+	}
+	public function getGeneratedDirectory(){
+		return Mage::helper('nhapsanpham')->_getGeneratedFolder().DS;
+	}
     public  function showdata($data){
         var_dump($data);
         echo '\n';
     }
     public function run()
     {    
+		$_qty_map=array();
+		$_qty_map_log=array();
+		foreach(Mage::getModel('catalog/product')->getCollection() as $product){
+			$stock=Mage::getModel('cataloginventory/stock_item')->loadByProduct($product);
+			$_qty_map[$product->getSku()]=$stock->getQty();
+			$_qty_map_log[]=array($product->getName(),$product->getSku(),$stock->getQty());
+			
+		}
+		$this->_qty_map=$_qty_map;
+		$file=$this->getImportDirectory()."backup".DS."backup_".$this->_productFile;
+        $csv = new Varien_File_Csv();
+        $csv->setLineLength(20480);
+		$csv->saveData($file, $_qty_map_log);  
+		
+		$this->showdata("remembered the qty map!");
         $this->process_attribute();
         $result=$this->ReadExportCSV($this->_inputFile,$this->_productFile);
     }
@@ -38,7 +55,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $line_of_text=array();
         if(!empty($this->_match_csv_header)) $line_of_text=$this->_match_csv_header;
         else{
-            $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import'.DS.$csvFile, 'r');
+            $file_handle = fopen($this->getImportDirectory().$csvFile, 'r');
             $i=0;
             $header=array();
             while (!feof($file_handle) ) {
@@ -56,7 +73,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         return -1;
     }
     public function getAllCsvColumns($csvFile){
-        $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import' .DS.$csvFile, 'r');
+        $file_handle = fopen($this->getImportDirectory().$csvFile, 'r');
         $i=0;
         $header=array();
         while (!feof($file_handle) ) {
@@ -74,15 +91,14 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
     public function process_category(){
         echo 'REMEMBER CATEGORY LIST'."\n";
         $mgt_cat=$this->getMagentoCategory();
-        $this->_categories =$mgt_cat;
-        Mage::log($this->_categories, Zend_Log::DEBUG, 'data_category.log');
+        $this->_categories =$mgt_cat;        
     }
 
     function cut_space($string=''){
         return str_replace(" ","",$string);
     }
     public function ReadExportCSV_getBrand($csvFile){
-        $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import' .DS.$csvFile, 'r');
+        $file_handle = fopen($this->getImportDirectory().$csvFile, 'r');
         $i=0;
         /*write the header of csv file*/
         $_brands=array();
@@ -103,9 +119,9 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
     public function ReadExportCSV($csvFile,$outputFile){
         $this->process_category();
-        $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import'.DS.$csvFile, 'r');
+        $file_handle = fopen($this->getImportDirectory().$csvFile, 'r');
         $i=0;
-        $file=Mage::getBaseDir('media') . DS . 'import'. DS .$outputFile;
+        $file=$this->getGeneratedDirectory().$outputFile;
         $csv = new Varien_File_Csv();
         $csv->setLineLength(20480);
         $csvdata = array();
@@ -133,96 +149,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
     function _is_configureable(){
 
     }
-    function getHeaderCSVLine(){
-        $data=array();
-        $data[0] = 'store';
-        $data[1] = 'websites';
-        $data[2] = 'attribute_set';
-        $data[3] = 'type';
-        $data[4] = 'category_ids';
-        $data[5] = 'sku';
-        $data[6] = 'has_options_disable';
-        $data[7] = 'name';
-        $data[8] = 'country_of_manufacture';
-        $data[9] = 'is_returnable';
-        $data[10] = 'msrp_enabled';
-        $data[11] = 'msrp_display_actual_price_type';
-        $data[12] = 'meta_title';
-        $data[13] = 'meta_description';
-        $data[14] = 'image_empty';
-        $data[15] = 'small_image_empty';
-        $data[16] = 'thumbnail_empty';
-        $data[17] = 'custom_design';
-        $data[18] = 'page_layout';
-        $data[19] = 'options_container';
-        $data[20] = 'gift_message_available';
-        $data[21] = 'gift_wrapping_available';
-        $data[22] = 'url_key';
-        $data[23] = 'weight';
-        $data[24] = 'price';
-        $data[25] = 'special_price';
-        $data[26] = 'msrp';
-        $data[27] = 'gift_wrapping_price';
-        $data[28] = 'status';
-        $data[29] = 'visibility';
-        $data[30] = 'ebizmarts_mark_visited';
-        $data[31] = 'tax_class_id';
-        $data[32] = 'is_recurring';
-        $data[33] = 'description';
-        $data[34] = 'short_description';
-        $data[35] = 'tax_code';
-        $data[36] = 'depth';
-        $data[37] = 'height';
-        $data[38] = 'width';
-        $data[39] = 'fixed_shipping_price';
-        $data[40] = 'meta_keyword';
-        $data[41] = 'custom_layout_update';
-        $data[42] = 'news_from_date';
-        $data[43] = 'news_to_date';
-        $data[44] = 'special_from_date';
-        $data[45] = 'special_to_date';
-        $data[46] = 'custom_design_from';
-        $data[47] = 'custom_design_to';
-        $data[48] = 'qty';
-        $data[49] = 'min_qty';
-        $data[50] = 'use_config_min_qty';
-        $data[51] = 'is_qty_decimal';
-        $data[52] = 'backorders';
-        $data[53] = 'use_config_backorders';
-        $data[54] = 'min_sale_qty';
-        $data[55] = 'use_config_min_sale_qty';
-        $data[56] = 'max_sale_qty';
-        $data[57] = 'use_config_max_sale_qty';
-        $data[58] = 'is_in_stock';
-        $data[59] = 'low_stock_date';
-        $data[60] = 'notify_stock_qty';
-        $data[61] = 'use_config_notify_stock_qty';
-        $data[62] = 'manage_stock';
-        $data[63] = 'use_config_manage_stock';
-        $data[64] = 'stock_status_changed_auto';
-        $data[65] = 'use_config_qty_increments';
-        $data[66] = 'qty_increments';
-        $data[67] = 'use_config_enable_qty_inc';
-        $data[68] = 'enable_qty_increments';
-        $data[69] = 'is_decimal_divided';
-        $data[70] = 'stock_status_changed_automatically';
-        $data[71] = 'use_config_enable_qty_increments';
-        $data[72] = 'product_name';
-        $data[73] = 'store_id';
-        $data[74] = 'product_type_id';
-        $data[75] = 'product_status_changed';
-        $data[76] = 'product_changed_websites';
-        $data[77] = 'brand';
-        //'options','patterns','patters_colours','g_raft_covers'        
-        $data[78] = 'color';
-        $data[79] = 'cost';
-        
-
-        return $data;
-        /*$fp = fopen($file, 'a') or die('can not open file');
-        fputcsv($fp, $this->add_enclose($data),',','^');
-        fclose($fp);*/
-    }
+    
   function getCSVLineSimple($array_line,$filename){        
         $_order_code=$this->getIndex($this->_inputFile,"ma_sp");/*sku*/
         $_order_name=$this->getIndex($this->_inputFile,"ten");
@@ -231,7 +158,12 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $_order_cost=$this->getIndex($this->_inputFile,"cost");
         $_order_color=$this->getIndex($this->_inputFile,"mau_sac");
         $_order_qty=$this->getIndex($this->_inputFile,"so_luong");
-
+		
+		$current_qty=$this->_qty_map[$_order_code];
+		if(empty($current_qty)) $current_qty=0;
+		$qty=$current_qty +(int)$array_line[$_order_qty];
+		
+		
         if(!$array_line[$_order_code]) $array_line[$_order_code] = ($array_line[$_order_name]?$array_line[$_order_name]:$array_line[$_order_product_url]);
 
         if($array_line[$_order_code] == "ma_sp") return;
@@ -242,8 +174,8 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $data=array();
         $data[0]= "admin";//"store"
         $data[1]= "base";//"websites"
-        $data[2]= "Đồ sơ sinh";//"attribute_set"
-        $data[3]= "simple";//"type"
+        $data[2]= Mage::helper('core')->__("Đồ sơ sinh");//"attribute_set"
+        $data[3]= Mage::helper('core')->__("simple");//"type"
        
 
         $data[4]='';
@@ -256,17 +188,17 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $data[7]= $array_line[$_order_name];    // "name";
 
         $data[8] = '';//'country_of_manufacture';
-        $data[9] = 'Use config';//'is_returnable';
-        $data[10] = 'Use config';//'msrp_enabled';
-        $data[11] = 'Use config';//'msrp_display_actual_price_type';
+        $data[9] = Mage::helper('core')->__('Use config');//'is_returnable';
+        $data[10] = Mage::helper('core')->__('Use config');//'msrp_enabled';
+        $data[11] = Mage::helper('core')->__('Use config');//'msrp_display_actual_price_type';
         $data[12] = $array_line[$_order_page_title];//'meta_title';
         $data[13] = $array_line[$_order_meta_des]; // 'meta_description';
         $data[14] = "";//'image';
         $data[15] = "";//'small_image';
         $data[16] = "";//'thumbnail';
         $data[17] = "";//'custom_design';
-        $data[18] = "No layout updates";// 'page_layout';
-        $data[19] = "Product Info Column";//'options_container';
+        $data[18] = Mage::helper('core')->__("No layout updates");// 'page_layout';
+        $data[19] = Mage::helper('core')->__("Product Info Column");//'options_container';
         $data[20] = "No";//'gift_message_available';
         $data[21] = "No";//'gift_wrapping_available';
 
@@ -284,13 +216,13 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
 
         $data[27] = "";//'gift_wrapping_price';
-        $data[28]= "Enabled";               //"status";
-        $data[29] = "Not Visible Individually";//'visibility';
-         $data[29] = "Catalog, Search";//'visibility';
+        $data[28]= Mage::helper('core')->__("Enabled");               //"status";
+        $data[29] = Mage::helper('core')->__("Not Visible Individually");//'visibility';
+         $data[29] = Mage::helper('core')->__("Catalog, Search");//'visibility';
 
-        $data[30] = "No";//'ebizmarts_mark_visited';
-        $data[31] = "Taxable Goods"; //'tax_class_id';
-        $data[32] = "No";   //'is_recurring';
+        $data[30] = Mage::helper('core')->__("No");//'ebizmarts_mark_visited';
+        $data[31] = Mage::helper('core')->__("Taxable Goods"); //'tax_class_id';
+        $data[32] = Mage::helper('core')->__("No");   //'is_recurring';
         $data[33] = "";   //'description';
         $data[34] = "";   //'short_description';
         $data[35] = "";   //'tax_code';
@@ -306,7 +238,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $data[45] = ""; //'special_to_date';
         $data[46] = ""; //'custom_design_from';
         $data[47] = ""; //'custom_design_to';
-        $data[48] = $array_line[$_order_qty];       //'qty';
+        $data[48] = $qty;       //'qty';
         $data[49] =  "1";         //'min_qty';
         $data[50] = "1";        //'use_config_min_qty';
         $data[51] = "0";        //'is_qty_decimal';
@@ -332,7 +264,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $data[71] = "1";        //'use_config_enable_qty_increments';
         $data[72] = $array_line[$_order_name];      //'product_name';
         $data[73] = "0";        //'store_id';
-        $data[74] = "simple";      //'product_type_id';
+        $data[74] = Mage::helper('sales')->__("simple");      //'product_type_id';
 
         $data[75] = "";     //'product_status_changed';
         $data[76] = "";         //'product_changed_websites';
@@ -366,14 +298,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
             $this->showdata('This product is missing category in csv export file.');
 
         }
-        /* $catagory_array=array("2" => "Default Category", "3" => "Guitars / Amps / Effects", "4" => "Guitars Efects", "5" => "Guitar Pedal Accessories", "12" => "Lifestyle", "13" => "Bras", "15" => "Scarves", "16" => "Scarves", "21" => "Drums", "23" => "PA Equipment / IT & Audio", "24" => "Sheet Music", "25" => "Piano & Keybroad", "26" => "Bestseller", "27" => "Orchestral Instruments", "28" => "Clearance", "40" => "Guitar Packs", "41" => "Acoustic Guitars", "42" => "Classical Guitars", "43" => "Electric Guitars", "44" => "Bass Guitars", "45" => "Amplifiers", "46" => "Guitar Effects Pedals", "47" => "Guitar Accessories", "48" => "Bass Accessories", "49" => "Folk Instruments", "50" => "Ukuleles", "51" => "Bass Packs", "52" => "Yamaha and Vox Promo", "53" => "Takamine Factory 2nd Clearance", "54" => "Roland V-Guitar Systems", "55" => "Guitar Heads", "56" => "Guitar Cabinets", "57" => "Guitar Combos", "58" => "Acoustic Amps", "59" => "Bass Heads", "60" => "Bass Cabinets", "61" => "Bass Combos", "62" => "Amp Accessories", "63" => "Effects Pedal Accessories", "64" => "Guitar Pedal Accessories", "65" => "Bass Pedals", "66" => "Chorus Pedals", "67" => "Compressor Pedals", "68" => "Delay Pedals", "69" => "Distortion & Overdrive Pedals", "70" => "EQ & Boost Pedals", "71" => "Flanger Pedals", "72" => "Loop Pedals", "73" => "Multi Effects Pedals", "74" => "Phaser Pedals", "75" => "Pitch Pedals", "76" => "Reverb Pedals", "77" => "Tremolo Pedals", "78" => "Tuner Pedals", "79" => "Volume & Expression Pedals", "80" => "Wah & Filter Pedals", "81" => "Wooden Stompbox", "82" => "Guitar Strings", "83" => "Guitar Interface", "84" => "Guitar Cables", "85" => "Rack Effects", "86" => "Guitar Care Products", "87" => "Guitar Cases", "88" => "Guitar Parts", "89" => "Guitar Pickups", "90" => "Guitar Stands", "91" => "Guitar Straps, Picks and Miscellaneous", "92" => "Guitar Tuners & Metronomes", "93" => "Slides & Capos", "94" => "Acoustic Guitar Strings", "95" => "Classical Guitar Strings", "96" => "Electric Guitar Strings", "97" => "Folk Instrument Strings", "98" => "Bass Strings", "99" => "Bass Cases", "100" => "Bass Pickups", "101" => "Bass Parts", "102" => "Resonators", "103" => "Banjos", "104" => "Harmonicas", "105" => "Lap Steels", "106" => "Mandolins", "107" => "Ukuleles", "108" => "Ukulele Accessories", "109" => "Cases & Bags", "110" => "Acoustic Drums", "111" => "Drum Amps / Monitors", "112" => "Electronic Drums", "113" => "Snare Drums", "114" => "Cymbals", "115" => "Drum Hardware, Stools & Pedals", "116" => "Drum Heads", "117" => "Percussion", "118" => "Drum Accessories", "119" => "Drumsticks and Mallets", "120" => "Drum Monitors", "121" => "Electronic Drum Accessories", "122" => "Snare Drum Heads", "123" => "Tom Heads", "124" => "Bass Drum Heads", "125" => "Drum Head Packs", "126" => "Megaphones", "127" => "Vocal Effects", "128" => "DJ Products", "129" => "DI Boxes", "130" => "Microphones", "131" => "iPhone & iPad Accessories", "132" => "Recording", "133" => "Cables", "134" => "PA Systems", "135" => "Mixers", "136" => "Speakers", "137" => "Foldback Monitors", "138" => "Power Amps", "139" => "Accessories", "140" => "Speaker Stands", "141" => "In Ear Monitoring", "142" => "Lighting", "143" => "Rack Gear", "144" => "Rack Cases", "145" => "Testers and Hum Eliminators", "146" => "Stage Microphones", "147" => "Studio Microphones", "148" => "Wireless Microphone", "149" => "Microphone Accessories", "150" => "Microphone Stands", "151" => "Mic Cables", "152" => "Controller Keyboards", "153" => "Studio Mon", "154" => "Recording Accessories", "155" => "Audio and MIDI Interfaces", "156" => "Digital Recorders", "157" => "Headphones", "158" => "Studio Monitors", "159" => "Outboard Gear", "160" => "Acoustic Treatments", "161" => "CD and DVD Recorders", "162" => "Consoles", "163" => "Control Surfaces", "164" => "Software", "165" => "Instrument Cables", "166" => "Microphone Cables", "167" => "Speaker Cables", "168" => "Adaptors & Plugs", "169" => "MIDI Cables", "170" => "Patch Cables", "171" => "Insert & Y Cables", "172" => "Single Interconnect Cables", "173" => "Dual Interconnect Cables", "174" => "Digital Cables", "175" => "Multicores and Looms", "176" => "Brass Instruments", "177" => "Woodwind", "178" => "Stringed Instruments", "179" => "Orchestral Percussion", "180" => "Metronomes", "181" => "Orchestral Tuners", "182" => "Orchestral Stands", "183" => "Conductors Batons", "184" => "Trumpets", "185" => "Lower Brass", "186" => "Brass Mouthpieces", "187" => "Brass Accessories", "188" => "French Horns", "189" => "Clarinets", "190" => "Flutes and Piccolos", "191" => "Saxophones", "192" => "Recorders", "193" => "Double Reed", "194" => "Woodwind Instrument Accessories", "195" => "Electronic Wind Instruments", "196" => "Accessories", "197" => "Strings Accessories", "198" => "Strings", "199" => "Violin", "200" => "Viola", "201" => "Violin and Viola Strings", "202" => "Cello", "203" => "Double Bass", "204" => "Cello and Double Bass Strings", "205" => "Electric Stringed Instruments", "206" => "Stringed Instrument Accessories", "207" => "Tuned Percussion", "208" => "Untuned Percussion", "209" => "Alto Saxophone Books", "210" => "AMEB Publishing", "211" => "Aural Books", "212" => "Baritone Saxophone Books", "213" => "Bass Guitar Books", "214" => "Broadway and Movie Books", "215" => "Cello Books", "216" => "Choral 2 Part Books", "217" => "Choral 3 Part Mixed Books", "218" => "Choral SATB Books", "219" => "Choral SSA Books", "220" => "Choral SSAA and TTBB Books", "221" => "Choral Unison Books", "222" => "Christmas Music Books", "223" => "Clarinet Books", "224" => "Classical Guitar Books", "225" => "Concert Band Books", "226" => "Double Bass Books", "227" => "Drums and Percussion Books", "228" => "Easy Piano Books", "229" => "Flute Books", "230" => "Folk Instrument Books", "231" => "French Horn Books", "232" => "Guitar Books", "233" => "Guitar DVD", "234" => "Guitar Method Books", "235" => "Guitar TAB Books", "236" => "Home Recording Books", "237" => "Jazz Ensemble Books", "238" => "Jazz Play Along Books - All Instruments", "239" => "Keyboard Books", "240" => "Lower Brass Books", "241" => "Manuscript", "242" => "Oboe and Bassoon Books", "243" => "Piano Duet Books", "244" => "Piano Play Along Books", "245" => "Piano Solo Books", "246" => "Piano Vocal Guitar Books", "247" => "Recorder Books", "248" => "Reference Books", "249" => "Single Sheets", "250" => "String Orchestra Books", "251" => "Teacher Resources", "252" => "Tenor Saxophone", "253" => "Theory Books", "254" => "Trombone Books", "255" => "Trumpet Books", "256" => "Viola Books", "257" => "Violin Books", "258" => "Vocal Books", "259" => "AMEB AURAL TRAINING", "260" => "AMEB BASSOON", "261" => "AMEB BRASS", "262" => "AMEB CELLO", "263" => "AMEB CLARINET", "264" => "AMEB CPM", "265" => "AMEB FLUTE", "266" => "AMEB GUITAR", "267" => "AMEB LOWER BRASS", "268" => "AMEB MUSIC CRAFT", "269" => "AMEB OBOE", "270" => "AMEB PIANO", "271" => "AMEB PIANO FOR LEISURE", "272" => "AMEB RECORDER", "273" => "AMEB SAXOPHONE", "274" => "AMEB SAXOPHONE FOR LEISURE", "275" => "AMEB SINGING", "276" => "AMEB SINGING FOR LEISURE", "277" => "AMEB SYLLABUS", "278" => "AMEB TRUMPET", "279" => "AMEB VIOLA", "280" => "AMEB VIOLIN", "281" => "Acoustic Pianos", "282" => "Digital Pianos", "283" => "Keyboards", "284" => "Keyboard Amps", "285" => "Hammond & Rodgers Organs", "286" => "Synthesizers and Sound Modules", "287" => "Controller Keyboards", "288" => "Stage Keyboards", "289" => "Piano & Keyboard Accessories", "290" => "Secondhand", "291" => "Grand Pianos", "292" => "Upright Pianos", "293" => "FLASH SALE", "294" => "EVENT TICKETS", "295" => "Admin", "296" => "Prestige & Limited Edition","297" =>"Piano Method Books",
-             "298"=>"Cases & Bags",
-             "299"=>"Woodwind Mouthpieces",
-             "300"=>"Woodwind Accessories",
-             "301"=>"Single Reeds",
-             "302"=>"Double Reeds",
-
-         );*/
+       
         $catagory_array=$this->_categories;
         $categories=array();
         $cat_array=explode("|",$string);
@@ -639,7 +564,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
     }
     public function ReadExportCSV_setSetAttributeValue($magento_attb,$csv_attb){
 		$value_array=array();
-        $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import' .DS.$this->_inputFile, 'r');
+        $file_handle = fopen($this->getImportDirectory().$this->_inputFile, 'r');
         $i=0;
         /*write the header of csv file*/       
         while (!feof($file_handle) ) {
@@ -701,7 +626,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         return '';
     }
     public function ReadExportCSV_getColor($csvFile){
-        $file_handle = fopen(Mage::getBaseDir('media') . DS . 'import'.DS.$csvFile, 'r');
+        $file_handle = fopen($this->getImportDirectory().$csvFile, 'r');
         $i=0;
         /*write the header of csv file*/
         $_colors=array();
@@ -785,8 +710,97 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         $field=explode(";",$field);
         return str_replace("Function=","",$field[1]);
     }
+	function getHeaderCSVLine(){
+        $data=array();
+        $data[0] = 'store';
+        $data[1] = 'websites';
+        $data[2] = 'attribute_set';
+        $data[3] = 'type';
+        $data[4] = 'category_ids';
+        $data[5] = 'sku';
+        $data[6] = 'has_options_disable';
+        $data[7] = 'name';
+        $data[8] = 'country_of_manufacture';
+        $data[9] = 'is_returnable';
+        $data[10] = 'msrp_enabled';
+        $data[11] = 'msrp_display_actual_price_type';
+        $data[12] = 'meta_title';
+        $data[13] = 'meta_description';
+        $data[14] = 'image_empty';
+        $data[15] = 'small_image_empty';
+        $data[16] = 'thumbnail_empty';
+        $data[17] = 'custom_design';
+        $data[18] = 'page_layout';
+        $data[19] = 'options_container';
+        $data[20] = 'gift_message_available';
+        $data[21] = 'gift_wrapping_available';
+        $data[22] = 'url_key';
+        $data[23] = 'weight';
+        $data[24] = 'price';
+        $data[25] = 'special_price';
+        $data[26] = 'msrp';
+        $data[27] = 'gift_wrapping_price';
+        $data[28] = 'status';
+        $data[29] = 'visibility';
+        $data[30] = 'ebizmarts_mark_visited';
+        $data[31] = 'tax_class_id';
+        $data[32] = 'is_recurring';
+        $data[33] = 'description';
+        $data[34] = 'short_description';
+        $data[35] = 'tax_code';
+        $data[36] = 'depth';
+        $data[37] = 'height';
+        $data[38] = 'width';
+        $data[39] = 'fixed_shipping_price';
+        $data[40] = 'meta_keyword';
+        $data[41] = 'custom_layout_update';
+        $data[42] = 'news_from_date';
+        $data[43] = 'news_to_date';
+        $data[44] = 'special_from_date';
+        $data[45] = 'special_to_date';
+        $data[46] = 'custom_design_from';
+        $data[47] = 'custom_design_to';
+        $data[48] = 'qty';
+        $data[49] = 'min_qty';
+        $data[50] = 'use_config_min_qty';
+        $data[51] = 'is_qty_decimal';
+        $data[52] = 'backorders';
+        $data[53] = 'use_config_backorders';
+        $data[54] = 'min_sale_qty';
+        $data[55] = 'use_config_min_sale_qty';
+        $data[56] = 'max_sale_qty';
+        $data[57] = 'use_config_max_sale_qty';
+        $data[58] = 'is_in_stock';
+        $data[59] = 'low_stock_date';
+        $data[60] = 'notify_stock_qty';
+        $data[61] = 'use_config_notify_stock_qty';
+        $data[62] = 'manage_stock';
+        $data[63] = 'use_config_manage_stock';
+        $data[64] = 'stock_status_changed_auto';
+        $data[65] = 'use_config_qty_increments';
+        $data[66] = 'qty_increments';
+        $data[67] = 'use_config_enable_qty_inc';
+        $data[68] = 'enable_qty_increments';
+        $data[69] = 'is_decimal_divided';
+        $data[70] = 'stock_status_changed_automatically';
+        $data[71] = 'use_config_enable_qty_increments';
+        $data[72] = 'product_name';
+        $data[73] = 'store_id';
+        $data[74] = 'product_type_id';
+        $data[75] = 'product_status_changed';
+        $data[76] = 'product_changed_websites';
+        $data[77] = 'brand';
+        //'options','patterns','patters_colours','g_raft_covers'        
+        $data[78] = 'color';
+        $data[79] = 'cost';
+        
 
+        return $data;
+        /*$fp = fopen($file, 'a') or die('can not open file');
+        fputcsv($fp, $this->add_enclose($data),',','^');
+        fclose($fp);*/
+    }
 }
 
-$shell = new Mage_Shell_Compiler();
-$shell->run();
+
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.0.1">
+	<adminhtml_nhapsanpham_index>
+		<reference name="head">
+        	  <action method="addCss"><name>nhapsanpham.css</name></action>			  
+			  <action method="addJs"><script>tromvia/jquery.js</script></action>
+			  <action method="addJs"><script>tromvia/nhapsanpham.js</script></action>
+        </reference>
+		<reference name="content">
+			<block type="nhapsanpham/adminhtml_quanly" name="nhapsanpham.quanly" template="/nhapsanpham/quanly.phtml" />
+		</reference>
+	</adminhtml_nhapsanpham_index>
+</layout>

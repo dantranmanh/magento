@@ -1,0 +1,8 @@
+/* deployment.css */
+#nhapsanpham #shell {height:500px;with:80%;background-color:#000000; color:#7FFF00;padding:20px;font:13px Courier New, monospace;overflow-y:scroll}
+#nhapsanpham .section {border-bottom: 1px dashed #000000;padding:15px 0}
+#nhapsanpham .section ul {height:50px}
+#nhapsanpham .section h4 {font:16px bold Arial}
+#nhapsanpham .section ul li {position:relative; float:left; margin-right:50px;width:100%;margin-bottom:15px;}
+#nhapsanpham .adminoutput {margin-bottom:20px; color: #E20000; font-size:13px}
+#nhapsanpham .uploadedfile {display:inline-block;}

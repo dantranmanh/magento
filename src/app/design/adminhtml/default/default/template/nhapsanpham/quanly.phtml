@@ -1,0 +1,127 @@
+<?php 
+$files=Mage::helper('nhapsanpham')->_getUploadedFiles();
+?>
+<form action="<?php echo Mage::helper("adminhtml")->getUrl('/nhapsanpham/uploadProductCsv');?>" method="post" id="form-validate" enctype="multipart/form-data">
+	<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+	<div id="nhapsanpham">
+	<div class="content-header">
+		<h3>Deployment Management</h3>
+	</div>
+	<script src="<?php echo $this->getJsUrl() ?>mage/adminhtml/loader.js" type="text/javascript"></script>
+	<div id="loadingmask" style="display: none;">
+		<div class="loader" id="loading-mask-loader">
+			<img src="<?php echo str_replace("index.php/","",$this->getUrl()) ?>skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="<?php echo $this->__('Loading...') ?>"/><?php echo $this->__('Loading...') ?>
+		</div>
+		<div id="loading-mask"></div>
+	</div>
+
+	<div class="section">
+		<h3><?php echo ucfirst($this->__('Nhập sản phẩm từ file csv'))?></h3>
+		<ul class="controllers">
+			<li>
+				<label name="uploadedcsv" class="">Chọn file : </label>
+				<select id="uploadedfiles">
+				<option value=""></option>
+				<?php foreach($files as $file):?>
+				<option value="<?php echo $file; ?>"><?php echo $file; ?></option>
+				<?php endforeach;?>
+				</select>
+				
+			</li>
+			<li>
+				<span>
+					<input style="display:none;" type="file" name="csvfile" title=""  id ="csvfile" />
+					<button class="scalable save uploadedfile" type="button" name="addfiles" id="addfiles">
+						<span><span><?php echo 'Chọn file mới từ máy tính'?></span></span>
+					</button>
+				</span>
+				<span>
+					<button type = "submit" class="scalable save">
+						<span><span><?php echo 'Upload file csv lên server'?></span></span>
+					</button>
+				</span>
+				
+				<span>
+					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
+						<span><span><?php echo 'Sinh file import sản phẩm'?></span></span>
+					</button>
+				</span>
+				
+			</li>					
+		</ul>
+		<br><br><br>
+		<ul class="controllers">
+			<span>
+					<button type = "button" class="scalable save" id="import_images" name="import_images" onclick="executeImages()">
+						<span><span><?php echo 'Chạy import ảnh sản phẩm'?></span></span>
+					</button>
+			</span>						
+		</ul>
+		
+	</div>
+	<div id="shell"></div>
+		
+
+	<script type="text/javascript">
+		var FORM_KEY="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>";
+		function execute(){ 
+			Element.show('loadingmask');
+			var reloadurl = '<?php echo Mage::helper("adminhtml")->getUrl('/nhapsanpham/execute') ?>';			
+			var param = $('uploadedfiles').value;			
+			if(param.length){
+				var parameters = {form_key:FORM_KEY,param:param};
+			}else{
+				alert("Hãy chọn file để import!");
+				Element.hide('loadingmask');
+				return;
+			}
+			
+			new Ajax.Request(reloadurl,{
+					method: 'post',
+					parameters: parameters,
+					onComplete: function(transport) {
+									Element.hide('loadingmask');
+									var shell = $('shell');
+									shell.innerHTML = "";
+									shell.innerHTML = transport.responseText;
+							}
+				});
+			return false;
+		}
+		function executeImages(){ 
+			Element.show('loadingmask');
+			var reloadurl = '<?php echo Mage::helper("adminhtml")->getUrl('/nhapsanpham/executeImages') ?>';			
+			var param = $('uploadedfiles').value;				
+			if(param.length){
+				var parameters = {form_key:FORM_KEY,param:param};
+			}else{
+				alert("Hãy chọn file để import!");
+				Element.hide('loadingmask');
+				return;
+			}
+					
+			new Ajax.Request(reloadurl,{
+					method: 'post',
+					parameters: parameters,
+					onComplete: function(transport) {
+									Element.hide('loadingmask');
+									var shell = $('shell');
+									shell.innerHTML = "";
+									shell.innerHTML = transport.responseText;
+							}
+				});
+			return false;
+		}
+		
+		
+		
+		
+		jQuery.noConflict();
+		jQuery( "#addfiles" ).click(function() {
+		  jQuery("#csvfile").click();
+		});
+		
+		
+	</script>
+	</div>
+</form>

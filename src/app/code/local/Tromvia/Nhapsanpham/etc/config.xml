@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Tromvia_Nhapsanpham>
+            <version>0.0.1</version>
+        </Tromvia_Nhapsanpham>
+    </modules>
+    <global>
+    	<helpers>
+            <nhapsanpham>
+                <class>Tromvia_Nhapsanpham_Helper</class>
+            </nhapsanpham>
+        </helpers>
+        <models>
+            <nhapsanpham>
+                <class>Tromvia_Nhapsanpham_Model</class>
+            </nhapsanpham>
+        </models>
+        <blocks>
+            <nhapsanpham>
+                <class>Tromvia_Nhapsanpham_Block</class>
+            </nhapsanpham>
+        </blocks>
+    </global>
+    <admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Tromvia_Nhapsanpham before="Mage_Adminhtml">Tromvia_Nhapsanpham_Adminhtml</Tromvia_Nhapsanpham>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+    <adminhtml>
+    	<menu>
+            <tromvia>
+            	<title>Shop Trộm Vía</title>
+				<sort_order>9999</sort_order>    
+                <children>
+                	<nhapsanpham translate="title" module="nhapsanpham">
+                		<title>Nhập sản phẩm</title>
+	                    <sort_order>20</sort_order>
+	                    <action>adminhtml/nhapsanpham/</action>	                	
+                	</nhapsanpham>
+                </children>
+            </tromvia>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <tromvia_nhapsanpham>
+                                            <title>Nhập sản phẩm</title>
+                                            <sort_order>50</sort_order>
+                                        </tromvia_nhapsanpham>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <deployment>
+                    <file>nhapsanpham.xml</file>
+                </deployment>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>
