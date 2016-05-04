@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <thunghiem_adminhtml_thunghiem_index>
+        <reference name="content">
+            <block type="thunghiem/adminhtml_thunghiem" name="thunghiem" />
+        </reference>
+    </thunghiem_adminhtml_thunghiem_index>
+</layout>

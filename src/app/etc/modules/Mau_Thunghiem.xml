@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Mau_Thunghiem>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Mau_Thunghiem>
+    </modules>
+</config> 

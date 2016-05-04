@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tromvia_Nhapsanpham>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tromvia_Nhapsanpham>
+    </modules>
+</config>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <thunghiem_index_index>
+        <reference name="content">
+            <block type="thunghiem/thunghiem" name="thunghiem" template="thunghiem/thunghiem.phtml" />
+        </reference>
+    </thunghiem_index_index>
+</layout> 
