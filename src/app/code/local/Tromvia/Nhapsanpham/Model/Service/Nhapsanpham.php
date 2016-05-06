@@ -44,7 +44,7 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
 
         while (!feof($fileInput) ) {
             $data=array();
-            if($i>=15) break;
+            //if($i>=15) break;
             $i++;
             $line_of_text = fgetcsv($fileInput, 20480);
 

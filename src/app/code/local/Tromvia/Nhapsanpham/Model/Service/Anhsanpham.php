@@ -36,7 +36,7 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
         $deleted_product=0;
         foreach($products as $product)
         {
-            if ($i >=5) break;			
+            //if ($i >=5) break;			
             if ($product[1] =="ten") continue;                
 			
             $count=$this->saveImageForProduct($product[0],$product[1],$product[1]);
