@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Tromvia_Nhapsanpham>
-            <version>0.0.1</version>
+            <version>0.1.1</version>
         </Tromvia_Nhapsanpham>
     </modules>
     <global>
@@ -21,6 +21,27 @@
                 <class>Tromvia_Nhapsanpham_Block</class>
             </nhapsanpham>
         </blocks>
+		<resources>
+            <nhapsanpham_setup>
+                <setup>
+                    <module>Tromvia_Nhapsanpham</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </nhapsanpham_setup>
+		<nhapsanpham_write>
+		<connection>
+		  <use>core_write</use>
+		</connection>
+	    </nhapsanpham_write>
+	  <nhapsanpham_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </nhapsanpham_read>
+        </resources>
     </global>
     <admin>
 		<routers>

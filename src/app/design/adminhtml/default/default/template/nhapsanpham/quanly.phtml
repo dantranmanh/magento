@@ -17,17 +17,7 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 
 	<div class="section">
 		<h3><?php echo ucfirst($this->__('Nhập sản phẩm từ file csv'))?></h3>
-		<ul class="controllers">
-			<li>
-				<label name="uploadedcsv" class="">Chọn file : </label>
-				<select id="uploadedfiles">
-				<option value=""></option>
-				<?php foreach($files as $file):?>
-				<option value="<?php echo $file; ?>"><?php echo $file; ?></option>
-				<?php endforeach;?>
-				</select>
-				
-			</li>
+		<ul class="controllers">			
 			<li>
 				<span>
 					<input style="display:none;" type="file" name="csvfile" title=""  id ="csvfile" />
@@ -40,22 +30,40 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 						<span><span><?php echo 'Upload file csv lên server'?></span></span>
 					</button>
 				</span>
-				
-				<span>
-					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
-						<span><span><?php echo 'Sinh file import sản phẩm'?></span></span>
-					</button>
-				</span>
-				
 			</li>					
 		</ul>
+
+        <br><br><br>
+        
+        <ul class="controllers">
+			<li>
+				<label name="uploadedcsv" class="">Chọn file : </label>
+				<select id="uploadedfiles">
+				<option value=""></option>
+				<?php foreach($files as $file):?>
+				<option value="<?php echo $file; ?>"><?php echo $file; ?></option>
+				<?php endforeach;?>
+				</select>
+				
+			</li>
+			<br><br>
+            <li>
+                <span>
+					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
+                        <span><span><?php echo 'Sinh file import sản phẩm'?></span></span>
+                    </button>
+			    </span>
+            </li>
+        </ul>
 		<br><br><br>
-		<ul class="controllers">
-			<span>
-					<button type = "button" class="scalable save" id="import_images" name="import_images" onclick="executeImages()">
-						<span><span><?php echo 'Chạy import ảnh sản phẩm'?></span></span>
-					</button>
-			</span>						
+		<ul class="controllers">			
+			<li>
+				<span>
+						<button type = "button" class="scalable save" id="import_images" name="import_images" onclick="executeImages()">
+							<span><span><?php echo 'Import Ảnh sản phẩm'?></span></span>
+						</button>
+				</span>						
+			</li>
 		</ul>
 		
 	</div>
@@ -95,11 +103,36 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 			if(param.length){
 				var parameters = {form_key:FORM_KEY,param:param};
 			}else{
-				alert("Hãy chọn file để import!");
+				alert("Hãy chọn file để import ảnh!");
 				Element.hide('loadingmask');
 				return;
 			}
 					
+			new Ajax.Request(reloadurl,{
+					method: 'post',
+					parameters: parameters,
+					onComplete: function(transport) {
+									Element.hide('loadingmask');
+									var shell = $('shell');
+									shell.innerHTML = "";
+									shell.innerHTML = transport.responseText;
+							}
+				});
+			return false;
+		}
+
+        function generateSku(){
+			Element.show('loadingmask');
+			var reloadurl = '<?php echo Mage::helper("adminhtml")->getUrl('/nhapsanpham/generateSku') ?>';
+			var param = $('uploadedfiles').value;
+			if(param.length){
+				var parameters = {form_key:FORM_KEY,param:param};
+			}else{
+				alert("Hãy chọn file để sinh mã sản phẩm!");
+				Element.hide('loadingmask');
+				return;
+			}
+
 			new Ajax.Request(reloadurl,{
 					method: 'post',
 					parameters: parameters,

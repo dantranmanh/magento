@@ -30,7 +30,40 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
         var_dump($data);
         echo '\n';
     }
-    public function run()
+
+    public function generateSku($csvFile)
+    {
+
+        $fileInput = fopen($this->getImportDirectory().$csvFile, 'r');
+        $i=0;
+        $csv = new Varien_File_Csv();
+        $csv->setLineLength(20480);
+        $csvdata = array();
+        /*write the header of csv file*/
+        $csvdata[] = $this->getHeaderImportedFileSku();
+
+        while (!feof($fileInput) ) {
+            $data=array();
+            if($i>=15) break;
+            $i++;
+            $line_of_text = fgetcsv($fileInput, 20480);
+
+            if(empty($line_of_text[$this->getIndex($this->_inputFile,"ten")]) && empty($line_of_text[$this->getIndex($this->_inputFile,"gia_ban")])) continue;
+            if($line_of_text[$this->getIndex($this->_inputFile,"ten")] == 'ten') continue;
+            $data[0]=Mage::helper('nhapsanpham')->generateSkuByNameFirstChar($line_of_text[$this->getIndex($this->_inputFile,"ten")]);
+            foreach($line_of_text as $field){
+                $data[]=$field;
+            }
+            $csvdata[]=$data;
+        }
+        fclose($fileInput);
+
+        $file=$this->getImportDirectory().$csvFile;
+        $csv->saveData($file, $csvdata);
+		
+        return ;
+    }
+        public function run()
     {    
 		$_qty_map=array();
 		$_qty_map_log=array();
@@ -135,10 +168,9 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
            
             if(empty($line_of_text[0]) && empty($line_of_text[1])) continue;
             if($line_of_text[0] == 'ten') continue;
-            $optionset=$line_of_text[$this->getIndex($this->_inputFile,"Option Set")];			
-			$data=$this->getCSVLineSimple($line_of_text,$outputFile);
+			$data=$this->getCSVLineSimple($line_of_text);
                 if(!empty($data)){
-                    $csvdata[]=$this->getCSVLineSimple($line_of_text,$outputFile);                    
+                    $csvdata[]=$this->getCSVLineSimple($line_of_text);
                 }            
         }
         $csv->saveData($file, $csvdata);
@@ -150,12 +182,12 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
 
     }
     
-  function getCSVLineSimple($array_line,$filename){        
+  function getCSVLineSimple($array_line){
         $_order_code=$this->getIndex($this->_inputFile,"ma_sp");/*sku*/
         $_order_name=$this->getIndex($this->_inputFile,"ten");
 
         $_order_product_price=$this->getIndex($this->_inputFile,"gia_ban");
-        $_order_cost=$this->getIndex($this->_inputFile,"cost");
+        $_order_cost=$this->getIndex($this->_inputFile,"gia_buon");
         $_order_color=$this->getIndex($this->_inputFile,"mau_sac");
         $_order_qty=$this->getIndex($this->_inputFile,"so_luong");
 		
@@ -709,6 +741,10 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
         $field=str_replace('"', "", $field);
         $field=explode(";",$field);
         return str_replace("Function=","",$field[1]);
+    }
+    function getHeaderImportedFileSku(){
+        $data=array("ma_sp","ten","don_vi","gia_buon","gia_ban","so_luong");
+        return $data;
     }
 	function getHeaderCSVLine(){
         $data=array();
