@@ -40,15 +40,30 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 						<span><span><?php echo 'Upload file csv lên server'?></span></span>
 					</button>
 				</span>
-				
-				<span>
-					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
-						<span><span><?php echo 'Sinh file import sản phẩm'?></span></span>
-					</button>
-				</span>
-				
 			</li>					
 		</ul>
+
+        <br><br><br>
+        <ul class="controllers">
+            <li>
+                <span>
+					<button type = "button" class="scalable save" id="generatesku" name="generatesku" onclick="generateSku()">
+                        <span><span><?php echo 'Sinh mã sản phẩm (cho sản phẩm nào chưa có mã)'?></span></span>
+                    </button>
+			    </span>
+            </li>
+        </ul>
+
+        <br><br><br>
+        <ul class="controllers">
+            <li>
+                <span>
+					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
+                        <span><span><?php echo 'Sinh file import sản phẩm'?></span></span>
+                    </button>
+			    </span>
+            </li>
+        </ul>
 		<br><br><br>
 		<ul class="controllers">
 			<span>
@@ -95,11 +110,36 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 			if(param.length){
 				var parameters = {form_key:FORM_KEY,param:param};
 			}else{
-				alert("Hãy chọn file để import!");
+				alert("Hãy chọn file để import ảnh!");
 				Element.hide('loadingmask');
 				return;
 			}
 					
+			new Ajax.Request(reloadurl,{
+					method: 'post',
+					parameters: parameters,
+					onComplete: function(transport) {
+									Element.hide('loadingmask');
+									var shell = $('shell');
+									shell.innerHTML = "";
+									shell.innerHTML = transport.responseText;
+							}
+				});
+			return false;
+		}
+
+        function generateSku(){
+			Element.show('loadingmask');
+			var reloadurl = '<?php echo Mage::helper("adminhtml")->getUrl('/nhapsanpham/generateSku') ?>';
+			var param = $('uploadedfiles').value;
+			if(param.length){
+				var parameters = {form_key:FORM_KEY,param:param};
+			}else{
+				alert("Hãy chọn file để sinh mã sản phẩm!");
+				Element.hide('loadingmask');
+				return;
+			}
+
 			new Ajax.Request(reloadurl,{
 					method: 'post',
 					parameters: parameters,

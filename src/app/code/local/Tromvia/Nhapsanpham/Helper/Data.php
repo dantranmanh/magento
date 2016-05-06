@@ -26,4 +26,16 @@ class Tromvia_Nhapsanpham_Helper_Data extends Mage_Core_Helper_Data
 	public function getImageImportedFolder(){
 		return Mage::getBaseDir('media') . DS . 'import'. DS .'image'.DS;
 	}
+
+    public function generateSkuByNameFirstChar($name){
+        $sku=null;
+        $name = explode(' ', $name);
+        if ( ! $name ) {
+            return false;
+        }
+        $result = '';
+        foreach ( $name as $word ) $sku .= $word[0];
+        if(!$sku) return false;
+        return strtoupper( $sku );
+    }
 }

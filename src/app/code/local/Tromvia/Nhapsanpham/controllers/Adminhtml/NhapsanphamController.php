@@ -38,9 +38,15 @@ class Tromvia_Nhapsanpham_Adminhtml_NhapsanphamController
 		$param = $request->getParam('param');
 		$anhSp=Mage::getModel('nhapsanpham/service_anhsanpham');
 		$anhSp->setInputFile($param);		
-		$anhSp->run();		
-		
-		$this->getResponse()->setBody($output);
+		$anhSp->run();
+	}
+    public function generateSkuAction()
+	{
+		$request = $this->getRequest();
+		$param = $request->getParam('param');
+		$anhSp=Mage::getModel('nhapsanpham/service_nhapsanpham');
+		$anhSp->setInputFile($param);
+		$anhSp->generateSku();
 	}
 	public function uploadProductCsvAction(){				
 		// Store input_csv upload
@@ -48,7 +54,6 @@ class Tromvia_Nhapsanpham_Adminhtml_NhapsanphamController
                 $targetPath = Mage::helper('nhapsanpham')->_getUploadFolder(); //desitnation directory  
                 //upload file
                 $result = $this->uploadFile($targetPath);
-                
                 if($result['file']) {
                     $data['csvfile'] = $result['file'];
                 }                
@@ -82,15 +87,20 @@ class Tromvia_Nhapsanpham_Adminhtml_NhapsanphamController
             $uploader->setFilesDispersion(false);
 
             $result = $uploader->save($targetPath, $FileName); //save the file on the specified path
-
             if (!$result) {
                  Mage::throwException( Mage::helper('nhapsanpham')->__('Cannot upload file.') );
             }
-            return $result;
+
         } catch (Exception $e) {
             $this->_getSession()->addException($e, $e->getMessage());
 			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('nhapsanpham')->__('Có sự cố khi upload file'));
+            return;
         }
 		Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('nhapsanpham')->__('Đã upload xong file import'));
+
+        $nhapSp=Mage::getModel('nhapsanpham/service_nhapsanpham');
+        $nhapSp->setInputFile($FileName);
+        $nhapSp->generateSku($FileName);
+        return $result;
     }
 }
