@@ -10,9 +10,13 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
 	public function getImportDirectory(){
 		return Mage::helper('nhapsanpham')->_getUploadFolder().DS;
 	}
-    public  function showdata($data){
+    public  function logImportImages($message){
+		if(!empty($message)) Mage::log($message, Zend_Log::DEBUG, 'imageImportLog.log');
+		
+	}
+    public  function showData($data){
         var_dump($data);
-        echo '\n';
+        echo ' <br> \n';
     }
     public function run()
     {
@@ -32,16 +36,16 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
         $deleted_product=0;
         foreach($products as $product)
         {
-            //if ($i >=5) break;
-            if ($product[1] =="ma_sp") continue;
-            $i++;     
-
-            $this->saveImageForProduct($product[1],$product[0],$product[1]);
-            echo "saved image for product : ".$product[0]." \n";
-            echo 'saved : '.$i."image \n";
-
-        }
-        echo 'saved : '.$i."image";
+            if ($i >=5) break;			
+            if ($product[1] =="ma_sp") continue;                
+			
+            $count=$this->saveImageForProduct($product[1],$product[0],$product[1]);
+			if($count){
+				$i++;
+				$this->logImportImages("Đã import xong ảnh cho sản phẩm : ".$product[0]);				
+			}
+		}
+        $this->showData('đã import ảnh cho  : '.$i."sản phẩm");
         return ;
     }
 
@@ -49,62 +53,61 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
     
     public function saveImageForProduct($productsku,$title,$imagename){
         $_productId = Mage::getModel('catalog/product')->getIdBySku($productsku);
-        /* if($_productId != $this->_image_deleted_product){
+        if($_productId != $this->_image_deleted_product){			
             $this->remove_images($_productId);
             $this->_image_deleted_product= $_productId;
-        } */
-        $newProduct = Mage::getModel('catalog/product')->load($_productId);
-
-        $data=array("imagename"=> $imagename,"imageurl"=>$imageurl);
-		$imageType=array($imagename.".jpg",$imagename.".jpeg",$imagename.".png");
-		$filename="";
-		foreach($imageType as $type){
-			$filepath   = Mage::helper('nhapsanpham')->getImageImportedFolder().$type;
-			//$this->showdata($filepath);
-			if (file_exists($filepath)){
-				$filename   = $type; //give a new name, you can modify as per your requirement
-				break;
-			}
-		}        
-        
-        $filepath   = Mage::helper('nhapsanpham')->getImageImportedFolder().$filename; //path for temp storage folder: ./media/import/
-        $filepath_to_image=$filepath;
-     
-        try{
-            if(filesize($filepath_to_image) < 500) {
-                $this->showdata('the file '.$filepath_to_image.'is crashed');
-                return;
-            }
-            if (file_exists($filepath_to_image)) {
-                if(!$this->checkImageExists($newProduct,$imagename)){
-
-                    $newProduct->addImageToMediaGallery($filepath_to_image, array('image', 'small_image', 'thumbnail'), false, false);
-                    //$newProduct->save();
-                }
-
-                echo 'saving image for product: '.$_productId."\n";
-                foreach($newProduct->getData('media_gallery') as $each){
-                    foreach($each as $image){
-
-                        $_file=explode("/",$image['file']);
-                        $_file_name=end($_file);
-                        $i++;
-                        $name=explode('.',$imagename);
-                        if($this->name_in_file_name($_file_name,$name[0])){
-                            $attributes = $newProduct->getTypeInstance(true)
-                                ->getSetAttributes($newProduct);
-                            $attributes['media_gallery']->getBackend()->updateImage($newProduct, $image['file'], $data=array('postion'=>$i,'label'=>$title));
-                        }
-                    }
-                }
-                $newProduct->save();
-            }else{
-                if(!file_exists($filepath_to_image))
-                    $this->showdata('the file '.$filepath_to_image.' has not been downloaded');
-            }
-        }catch (Exception $e){ echo '3333';
-            Zend_Debug::dump($e->getMessage());
+			$this->logImportImages('đã reset ảnh xong trên mã sản phẩm: '.$productsku);
         }
+		
+        
+		$path= Mage::helper('nhapsanpham')->getImageImportedFolder().$productsku;
+		if(!file_exists($path)){
+			if(mkdir($path)){
+				$this->logImportImages("created image directory for this path: ".$path);
+			};
+			
+		}		
+		$imagesImported=$this->getFilesInPath($path);		
+		if(count(imagesImported) == 0) {
+				$this->logImportImages("this folder is empty: ".$path);
+				return 0;
+		}
+		$count=0;
+		foreach($imagesImported as $imageImported ){
+				$filepath_to_image   = $path.DS.$imageImported; //path for temp storage folder: ./media/import/			
+				try{
+					if(filesize($filepath_to_image) < 500) {
+						$this->logImportImages('file '.$filepath_to_image.' bị hỏng');
+						return;
+					}
+					if (file_exists($filepath_to_image)) {
+						$newProduct = Mage::getModel('catalog/product')->load($_productId);
+						$newProduct->addImageToMediaGallery($filepath_to_image, array('image', 'small_image', 'thumbnail'), false, false);
+						
+					/* 	foreach($newProduct->getData('media_gallery') as $each){
+							foreach($each as $image){
+								$_file=explode("/",$image['file']);
+								$_file_name=end($_file);
+								$i++;
+								
+								if($this->name_in_file_name($_file_name,$imageImported)){
+									$attributes = $newProduct->getTypeInstance(true)
+										->getSetAttributes($newProduct);
+									$attributes['media_gallery']->getBackend()->updateImage($newProduct, $image['file'], $data=array('postion'=>$i,'label'=>$title));
+								}
+							}
+						} */
+						$newProduct->save();
+						$count++;
+					}else{
+						if(!file_exists($filepath_to_image))
+							$this->logImportImages('file '.$filepath_to_image.' không tồn tại');
+					}
+				}catch (Exception $e){ echo '3333';
+					Zend_Debug::dump($e->getMessage());
+				}
+		}
+		return $count;
     }
 
 	 public function empty_image_configurable_product(){
@@ -123,7 +126,7 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
     function remove_images($productId =null){
         $product = Mage::getModel('catalog/product')->load($productId);
         Mage::app()->getStore()->setId(Mage_Core_Model_App::ADMIN_STORE_ID);
-        $this->showdata('Deleted images of product Id : '.$product->getEntityId());
+      
         if ($product->getId()){
             $mediaApi = Mage::getModel("catalog/product_attribute_media_api");
             $items = $mediaApi->items($product->getId());
@@ -260,5 +263,16 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
         $label=str_replace('  '," ",$label);
         return $label;
     }
+	
+	public function getFilesInPath($path){
+		$_list=array();		
+		$files = scandir($path);
+		foreach($files as $file){
+			if($file != "." && $file !=".."){
+				$_list[] = $file;
+			}
+		}
+		return $_list;
+	}
 
 }
