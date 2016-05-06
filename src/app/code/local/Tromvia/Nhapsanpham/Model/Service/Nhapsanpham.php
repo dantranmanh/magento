@@ -60,6 +60,7 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
 
         $file=$this->getImportDirectory().$csvFile;
         $csv->saveData($file, $csvdata);
+		
         return ;
     }
         public function run()
@@ -186,7 +187,7 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
         $_order_name=$this->getIndex($this->_inputFile,"ten");
 
         $_order_product_price=$this->getIndex($this->_inputFile,"gia_ban");
-        $_order_cost=$this->getIndex($this->_inputFile,"cost");
+        $_order_cost=$this->getIndex($this->_inputFile,"gia_buon");
         $_order_color=$this->getIndex($this->_inputFile,"mau_sac");
         $_order_qty=$this->getIndex($this->_inputFile,"so_luong");
 		

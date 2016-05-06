@@ -17,17 +17,7 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 
 	<div class="section">
 		<h3><?php echo ucfirst($this->__('Nhập sản phẩm từ file csv'))?></h3>
-		<ul class="controllers">
-			<li>
-				<label name="uploadedcsv" class="">Chọn file : </label>
-				<select id="uploadedfiles">
-				<option value=""></option>
-				<?php foreach($files as $file):?>
-				<option value="<?php echo $file; ?>"><?php echo $file; ?></option>
-				<?php endforeach;?>
-				</select>
-				
-			</li>
+		<ul class="controllers">			
 			<li>
 				<span>
 					<input style="display:none;" type="file" name="csvfile" title=""  id ="csvfile" />
@@ -44,18 +34,19 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
 		</ul>
 
         <br><br><br>
+        
         <ul class="controllers">
-            <li>
-                <span>
-					<button type = "button" class="scalable save" id="generatesku" name="generatesku" onclick="generateSku()">
-                        <span><span><?php echo 'Sinh mã sản phẩm (cho sản phẩm nào chưa có mã)'?></span></span>
-                    </button>
-			    </span>
-            </li>
-        </ul>
-
-        <br><br><br>
-        <ul class="controllers">
+			<li>
+				<label name="uploadedcsv" class="">Chọn file : </label>
+				<select id="uploadedfiles">
+				<option value=""></option>
+				<?php foreach($files as $file):?>
+				<option value="<?php echo $file; ?>"><?php echo $file; ?></option>
+				<?php endforeach;?>
+				</select>
+				
+			</li>
+			<br><br>
             <li>
                 <span>
 					<button type = "button" class="scalable save" id="generatefile" name="generatefile" onclick="execute()">
@@ -65,12 +56,14 @@ $files=Mage::helper('nhapsanpham')->_getUploadedFiles();
             </li>
         </ul>
 		<br><br><br>
-		<ul class="controllers">
-			<span>
-					<button type = "button" class="scalable save" id="import_images" name="import_images" onclick="executeImages()">
-						<span><span><?php echo 'Chạy import ảnh sản phẩm'?></span></span>
-					</button>
-			</span>						
+		<ul class="controllers">			
+			<li>
+				<span>
+						<button type = "button" class="scalable save" id="import_images" name="import_images" onclick="executeImages()">
+							<span><span><?php echo 'Import Ảnh sản phẩm'?></span></span>
+						</button>
+				</span>						
+			</li>
 		</ul>
 		
 	</div>

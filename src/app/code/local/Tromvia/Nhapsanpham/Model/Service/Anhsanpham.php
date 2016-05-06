@@ -37,9 +37,9 @@ class Tromvia_Nhapsanpham_Model_Service_Anhsanpham
         foreach($products as $product)
         {
             if ($i >=5) break;			
-            if ($product[1] =="ma_sp") continue;                
+            if ($product[1] =="ten") continue;                
 			
-            $count=$this->saveImageForProduct($product[1],$product[0],$product[1]);
+            $count=$this->saveImageForProduct($product[0],$product[1],$product[1]);
 			if($count){
 				$i++;
 				$this->logImportImages("Đã import xong ảnh cho sản phẩm : ".$product[0]);				
