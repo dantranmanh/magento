@@ -500,10 +500,11 @@ class TBT_Enhancedgrid_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_W
     
     public function getRowUrl($row)
     {
-        return $this->getUrl('adminhtml/catalog_product/edit', array(
+        /* return $this->getUrl('adminhtml/catalog_product/edit', array(
             'store'=>$this->getRequest()->getParam('store'),
             'id'=>$row->getId())
-        );
+        ); */
+		return '';
     }
     
     public function getGridUrl()
