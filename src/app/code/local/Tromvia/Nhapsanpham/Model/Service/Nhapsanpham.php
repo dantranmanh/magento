@@ -278,14 +278,14 @@ class Tromvia_Nhapsanpham_Model_Service_Nhapsanpham
         $data[53] = "1";        //'use_config_backorders';
         $data[54] = "1";        //'min_sale_qty';
         $data[55] = "1";        //'use_config_min_sale_qty';
-        $data[56] = "0";        // 'max_sale_qty';
+        $data[56] = "10000";        // 'max_sale_qty';
         $data[57] = "1";        //'use_config_max_sale_qty';
         $data[58] = "1";        //'is_in_stock';
         $data[59] = "";        //'low_stock_date';
         $data[60] = "";        // 'notify_stock_qty';
         $data[61] = "1";        //'use_config_notify_stock_qty';
         $data[62] = "1";        //'manage_stock';
-        $data[63] = "1";        //'use_config_manage_stock';
+        $data[63] = "0";        //'use_config_manage_stock';
         $data[64] = "0";        //'stock_status_changed_auto';
         $data[65] = "1";        //'use_config_qty_increments';f
         $data[66] = "0";        //'qty_increments';
