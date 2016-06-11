@@ -7,7 +7,8 @@ class TBT_Enhancedgrid_Model_System_Config_Source_Columns_Show
     
         $collection = Mage::getResourceModel('eav/entity_attribute_collection')
             ->setEntityTypeFilter( Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId() )
-            ->addVisibleFilter();
+            //->addVisibleFilter()
+			;
         $cols = array();
         $cols[] = array('value' => 'id',   'label' => 'ID');
         $cols[] = array('value' => 'type_id',   'label' => 'Type (simple, bundle, etc)');
