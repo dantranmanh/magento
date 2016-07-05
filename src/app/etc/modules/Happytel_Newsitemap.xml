@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <Happytel_Newsitemap>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Happytel_Newsitemap>
-    </modules>
-</config>

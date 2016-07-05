@@ -42,6 +42,17 @@
 		</connection>
 	  </nhapsanpham_read>
         </resources>
+		<events>
+			<sales_order_place_after>
+				<observers>
+					<tromvia_sales_order_observer>
+						<type>singleton</type>
+						<class>nhapsanpham/observer</class>
+						<method>luu_order</method>
+					</tromvia_sales_order_observer>
+				</observers>
+			</sales_order_place_after>
+		</events>
     </global>
     <admin>
 		<routers>

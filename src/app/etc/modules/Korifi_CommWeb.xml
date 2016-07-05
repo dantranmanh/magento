@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <Korifi_CommWeb>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Korifi_CommWeb>
-    </modules>
-</config> 
