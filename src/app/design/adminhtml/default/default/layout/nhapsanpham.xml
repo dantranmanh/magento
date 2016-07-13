@@ -10,4 +10,9 @@
 			<block type="nhapsanpham/adminhtml_quanly" name="nhapsanpham.quanly" template="/nhapsanpham/quanly.phtml" />
 		</reference>
 	</adminhtml_nhapsanpham_index>
+    <adminhtml_thuchi_index>
+        <reference name="content">
+            <block type="nhapsanpham/adminhtml_thuchi" name="thuchi" />
+        </reference>
+    </adminhtml_thuchi_index>
 </layout>

@@ -76,6 +76,11 @@
 	                    <sort_order>20</sort_order>
 	                    <action>adminhtml/nhapsanpham/</action>	                	
                 	</nhapsanpham>
+                    <chitieu translate="title" module="nhapsanpham">
+                        <title>Quản lý thu chi</title>
+                        <sort_order>10</sort_order>
+                        <action>adminhtml/nhapsanpham/</action>
+                    </chitieu>
                 </children>
             </tromvia>
         </menu>
